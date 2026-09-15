@@ -21,7 +21,7 @@ type TitleFormsProps = {
 
 const formSchema = z.object({
   title: z.string().min(1, {
-    message: 'Title is required',
+    message: 'El título es obligatorio',
   }),
 });
 
@@ -40,24 +40,24 @@ export default function TitleForms({ courseId, initialData }: TitleFormsProps) {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       await axios.patch(`/api/courses/${courseId}`, values);
-      toast.success('Course updated');
+      toast.success('Curso actualizado');
       toggleEdit();
       router.refresh();
     } catch {
-      toast.error('Something went wrong');
+      toast.error('Algo salió mal');
     }
   };
   return (
     <div className='mt-6 boder bg-slate-100 rounded-md p-4'>
       <div className='font-medium flex items-center justify-between gapy1'>
-        Course title
+        Título del curso
         <Button onClick={toggleEdit} variant={'ghost'}>
           {isEditing ? (
-            <>Cancel</>
+            <>Cancelar</>
           ) : (
             <>
               <Pencil className='h-4 w-4 mr-2' />
-              Edit title
+              Editar título
             </>
           )}
         </Button>
@@ -73,14 +73,14 @@ export default function TitleForms({ courseId, initialData }: TitleFormsProps) {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input disabled={isSubmitting} placeholder='e.g "Advance web development"' {...field} />
+                    <Input disabled={isSubmitting} placeholder='Ej. "Desarrollo web avanzado"' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
             <div className='flex items-center mt-2 gap-x-2'>
-              <Button disabled={!isValid || isSubmitting}>Save</Button>
+              <Button disabled={!isValid || isSubmitting}>Guardar</Button>
             </div>
           </form>
         </Form>

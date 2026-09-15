@@ -14,7 +14,7 @@ import { Input } from '@/components/ui/input';
 
 const formSchema = z.object({
   title: z.string().min(1, {
-    message: 'Title is required',
+    message: 'El título es obligatorio',
   }),
 });
 
@@ -32,17 +32,17 @@ const CreatePage = () => {
     try {
       const respone = await axios.post('/api/courses', values);
       router.push(`/teacher/courses/${respone.data.id}`);
-      toast.success('Course Created');
+      toast.success('Curso creado');
     } catch {
-      toast.error('Something went wrong');
+      toast.error('Algo salió mal');
     }
   };
   return (
     <div className='max-w-5xl mx-auto flex md:items-center md:justify-center h-full p-6'>
       <div>
-        <h1 className='text-2xl'>Name youer course</h1>
+        <h1 className='text-2xl'>Nombra tu curso</h1>
         <p className='text-sm text-slate-600'>
-          What would you like to name your course? Don&apos;t worry, you can change this later.
+          ¿Cómo te gustaría nombrar a tu curso? No te preocupes, puedes cambiar esto más tarde.
         </p>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8 mt-8'>
@@ -51,22 +51,22 @@ const CreatePage = () => {
               name='title'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Course Title</FormLabel>
+                  <FormLabel>Título del curso</FormLabel>
                   <FormControl>
-                    <Input disabled={isSubmitting} placeholder='e.g. "Advance web development"' {...field} />
+                    <Input disabled={isSubmitting} placeholder='Ej. "Desarrollo web avanzado"' {...field} />
                   </FormControl>
-                  <FormDescription>What will you teach in this course?</FormDescription>
+                  <FormDescription>¿Qué enseñarás en este curso?</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
             <Link href={'/teacher/courses'}>
               <Button type='button' variant='ghost'>
-                Cancel
+                Cancelar
               </Button>
             </Link>
             <Button type='submit' disabled={!isValid || isSubmitting}>
-              Continue
+              Continuar
             </Button>
           </form>
         </Form>

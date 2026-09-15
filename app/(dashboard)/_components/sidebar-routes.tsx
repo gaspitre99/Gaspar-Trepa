@@ -8,24 +8,24 @@ import SidebarItem from './sidebar-item';
 const guestRoutes = [
   {
     icon: Layout,
-    label: 'Dashboard',
+    label: 'Panel',
     href: '/',
   },
   {
     icon: Compass,
-    label: 'Browse',
+    label: 'Explorar',
     href: '/search',
   },
 ];
 const teacherRoutes = [
   {
     icon: List,
-    label: 'Courses',
+    label: 'Cursos',
     href: '/teacher/courses',
   },
   {
     icon: BarChart,
-    label: 'Analytics',
+    label: 'Analíticas',
     href: '/teacher/analytics',
   },
 ];

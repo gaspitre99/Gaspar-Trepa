@@ -24,16 +24,16 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ href, icon: Icon, label }) =>
       onClick={onClick}
       type='button'
       className={cn(
-        'flex items-center gap-x-2 text-slate-500 text-sm font-[500] pl-6 transition-all hover:text-slate-600 hover:bg-slate-300/20',
-        isActive && 'text-sky-700 bg-sky-200/20 hover:bg-sky-200/20 hover:textsky70'
+        'flex items-center gap-x-2 text-slate-300 text-sm font-[500] pl-6 transition-all hover:text-white hover:bg-slate-800/50',
+        isActive && 'text-emerald-400 bg-slate-800 hover:bg-slate-800 hover:text-emerald-400'
       )}
     >
       <div className='flex items-center gap-x-2 py-4'>
-        <Icon size={22} className={cn('text-slate-500', isActive && 'text-sky-700')} />
+        <Icon size={22} className={cn('text-slate-300', isActive && 'text-emerald-400')} />
         {label}
       </div>
       <div
-        className={cn('ml-auto opacity-0 border-2 border-sky-700 h-full transition-all', isActive && 'opacity-100')}
+        className={cn('ml-auto opacity-0 border-2 border-emerald-500 h-full transition-all', isActive && 'opacity-100')}
       />
     </button>
   );
