@@ -1,6 +1,8 @@
 import { UserButton } from "@clerk/nextjs";
-import CalculadoraInflacion from "@/components/calculadora-inflacion";
-import PortfolioRoulette from "@/components/portfolio-roulette";
+import dynamic from 'next/dynamic';
+
+const PortfolioRoulette = dynamic(() => import('@/components/portfolio-roulette'), { ssr: false });
+const CalculadoraInflacion = dynamic(() => import('@/components/calculadora-inflacion'), { ssr: false });
 
 export default function Home() {
   return (

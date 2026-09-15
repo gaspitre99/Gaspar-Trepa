@@ -4,11 +4,17 @@ import React, { useState, useEffect } from 'react';
 import { formatPrice } from '@/lib/format';
 import confetti from 'canvas-confetti';
 import Link from 'next/link';
+import { useMarket } from '@/context/market-context';
 
 export default function CalculadoraInflacion() {
+  const { data } = useMarket();
   const [capital, setCapital] = useState<number>(100000);
   const [tna, setTna] = useState<number>(60);
-  const [inflacion, setInflacion] = useState<number>(4);
+  const [inflacion, setInflacion] = useState<number>(data.inflacionMensualEst);
+
+  useEffect(() => {
+    setInflacion(data.inflacionMensualEst);
+  }, [data.inflacionMensualEst]);
 
   const tasaMensualNominal = tna / 12 / 100;
   const tasaMensualInflacion = inflacion / 100;
@@ -33,7 +39,7 @@ export default function CalculadoraInflacion() {
 
   // Tangible metrics
   const kilosAsado = Math.floor(Math.abs(gananciaReal) / 6000); // approx $6000 ARS / kg asado
-  const dolaresMep = (Math.abs(gananciaReal) / 1050).toFixed(2); // approx $1050 ARS / USD MEP
+  const dolaresMep = (Math.abs(gananciaReal) / data.dolarMep.venta).toFixed(2);
 
   return (
     <div className={`p-6 rounded-xl shadow-lg border transition-all duration-500 max-w-md mx-auto w-full relative overflow-hidden ${isPositivo ? 'bg-emerald-950 border-emerald-500 shadow-emerald-500/20' : 'bg-slate-900 border-rose-500 shadow-rose-500/20'}`}>
