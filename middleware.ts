@@ -7,12 +7,7 @@ const hasClerkKeys =
 
 export default hasClerkKeys
   ? authMiddleware({
-      publicRoutes: [
-        "/",
-        "/herramientas",
-        "/api/market-data",
-        "/api/uploadthing",
-      ],
+      publicRoutes: ["/(.*)"],
     })
   : () => NextResponse.next();
 

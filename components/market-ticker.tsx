@@ -1,98 +1,86 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { formatPrice } from '@/lib/format';
 
-interface AssetData {
-  symbol: string;
-  priceFormatted: string;
-  isARS: boolean;
-}
+type DolarRate = {
+  moneda: string;
+  casa: string;
+  nombre: string;
+  compra: number;
+  venta: number;
+  fechaActualizacion: string;
+};
 
-export default function MarketTicker() {
-  const [data, setData] = useState<AssetData[]>([]);
+const MarketTicker = () => {
+  const [rates, setRates] = useState<DolarRate[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    let isMounted = true;
-
-    const fetchMarketData = async () => {
+    const fetchRates = async () => {
       try {
-        const resBlue = await fetch('https://dolarapi.com/v1/dolares/blue');
-        const blueData = await resBlue.json();
-
-        const resMep = await fetch('https://dolarapi.com/v1/dolares/mep');
-        const mepData = await resMep.json();
-
-        let btcDataStr = '';
-        try {
-          const resBtc = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
-          if (resBtc.ok) {
-            const btcJson = await resBtc.json();
-            btcDataStr = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(btcJson.bitcoin.usd);
-          }
-        } catch (e) {
-          // fallback or ignore
-        }
-
-        if (isMounted) {
-          const newData: AssetData[] = [
-            { symbol: 'BLUE', priceFormatted: formatPrice(blueData.venta), isARS: true },
-            { symbol: 'MEP', priceFormatted: formatPrice(mepData.venta), isARS: true },
-          ];
-          if (btcDataStr) {
-            newData.push({ symbol: 'BTC', priceFormatted: btcDataStr, isARS: false });
-          }
-          newData.push({ symbol: 'SPY', priceFormatted: 'USD 500.00 (ref)', isARS: false });
-
-          setData(newData);
-          setLoading(false);
-        }
+        const response = await fetch('https://dolarapi.com/v1/dolares');
+        if (!response.ok) throw new Error('Failed to fetch');
+        const data = await response.json();
+        // Filter for Oficial, Blue, MEP, CCL
+        const filteredRates = data.filter((rate: DolarRate) =>
+          ['oficial', 'blue', 'mep', 'contadoconliqui'].includes(rate.casa)
+        );
+        setRates(filteredRates);
       } catch (error) {
-        console.error('Failed to fetch market ticker data', error);
-        if (isMounted) {
-          setLoading(false);
-        }
+        console.error('Error fetching market rates:', error);
+        // Fallback static values
+        setRates([
+          { moneda: 'USD', casa: 'oficial', nombre: 'Oficial', compra: 850, venta: 900, fechaActualizacion: '' },
+          { moneda: 'USD', casa: 'blue', nombre: 'Blue', compra: 1000, venta: 1050, fechaActualizacion: '' },
+          { moneda: 'USD', casa: 'mep', nombre: 'Bolsa', compra: 1020, venta: 1030, fechaActualizacion: '' },
+          { moneda: 'USD', casa: 'contadoconliqui', nombre: 'Contado con liqui', compra: 1050, venta: 1060, fechaActualizacion: '' },
+        ]);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchMarketData();
-    const interval = setInterval(fetchMarketData, 60000);
-
-    return () => {
-      isMounted = false;
-      clearInterval(interval);
-    };
+    fetchRates();
   }, []);
 
   if (loading) {
-    return (
-      <div className="w-full bg-slate-900 text-slate-300 py-2 px-4 flex gap-4 overflow-x-hidden border-b border-slate-700">
-        <div className="animate-pulse h-4 w-24 bg-slate-700 rounded"></div>
-        <div className="animate-pulse h-4 w-24 bg-slate-700 rounded"></div>
-        <div className="animate-pulse h-4 w-24 bg-slate-700 rounded"></div>
-      </div>
-    );
+    return <div className="w-full bg-slate-900 text-white py-2 text-sm text-center">Cargando cotizaciones...</div>;
   }
 
-  if (!data.length) return null;
-
   return (
-    <div className="w-full bg-slate-900 text-white py-2 px-4 flex items-center overflow-x-auto whitespace-nowrap border-b border-slate-700 hide-scrollbar text-sm space-x-6">
-      <div className="flex items-center gap-2 mr-2 shrink-0">
-        <div className="relative flex h-2 w-2">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-        </div>
-        <span className="font-semibold text-emerald-400 text-xs tracking-wider">EN VIVO</span>
+    <div className="w-full bg-slate-900 text-white overflow-hidden py-2 text-sm relative z-50">
+      <div className="flex whitespace-nowrap animate-ticker">
+        {rates.map((rate, index) => (
+          <div key={index} className="inline-flex items-center px-4 space-x-2">
+            <span className="font-semibold text-emerald-400">Dólar {rate.nombre}:</span>
+            <span>C: ${rate.compra.toFixed(2)}</span>
+            <span>/</span>
+            <span>V: ${rate.venta.toFixed(2)}</span>
+            <span className="mx-4 text-slate-500">|</span>
+          </div>
+        ))}
+        {/* Duplicate for seamless scrolling */}
+        {rates.map((rate, index) => (
+          <div key={`dup-${index}`} className="inline-flex items-center px-4 space-x-2">
+            <span className="font-semibold text-emerald-400">Dólar {rate.nombre}:</span>
+            <span>C: ${rate.compra.toFixed(2)}</span>
+            <span>/</span>
+            <span>V: ${rate.venta.toFixed(2)}</span>
+            <span className="mx-4 text-slate-500">|</span>
+          </div>
+        ))}
       </div>
-
-      {data.map((asset, idx) => (
-        <div key={idx} className="flex items-center gap-2 shrink-0">
-          <span className="font-bold text-slate-400">{asset.symbol}</span>
-          <span className="font-medium">{asset.priceFormatted}</span>
-        </div>
-      ))}
+      <style jsx>{`
+        @keyframes ticker {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        .animate-ticker {
+          animation: ticker 30s linear infinite;
+        }
+      `}</style>
     </div>
   );
-}
+};
+
+export default MarketTicker;

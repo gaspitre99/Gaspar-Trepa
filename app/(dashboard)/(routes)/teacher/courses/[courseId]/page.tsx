@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import React from 'react';
 import { auth } from '@clerk/nextjs';
 import { LayoutDashboard } from 'lucide-react';

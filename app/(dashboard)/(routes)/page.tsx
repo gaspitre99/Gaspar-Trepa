@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { UserButton } from "@clerk/nextjs";
 import CalculadoraInflacion from "@/components/calculadora-inflacion";
 import PortfolioRoulette from "@/components/portfolio-roulette";
