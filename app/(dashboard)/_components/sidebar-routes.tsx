@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { Compass, Layout, Wrench, BookOpen } from 'lucide-react';
+import { Compass, Layout, Wrench, BookOpen, Newspaper, Landmark } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 
 import SidebarItem from './sidebar-item';
@@ -17,9 +17,19 @@ const routes = [
     href: '/search',
   },
   {
+    icon: Newspaper,
+    label: 'Artículos',
+    href: '/articulos',
+  },
+  {
     icon: Wrench,
     label: 'Herramientas',
     href: '/herramientas',
+  },
+  {
+    icon: Landmark,
+    label: 'Historia Monetaria',
+    href: '/herramientas/historia-monetaria',
   },
   {
     icon: BookOpen,

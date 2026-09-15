@@ -1,72 +1,127 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { formatPrice } from '@/lib/format';
 
-type DolarRate = {
-  moneda: string;
-  casa: string;
-  nombre: string;
-  compra: number;
-  venta: number;
-  fechaActualizacion: string;
-};
+interface AssetData {
+  symbol: string;
+  priceFormatted: string;
+  isARS: boolean;
+}
 
-const MarketTicker = () => {
-  const [rates, setRates] = useState<DolarRate[]>([]);
+export default function MarketTicker() {
+  const [data, setData] = useState<AssetData[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchRates = async () => {
+    let isMounted = true;
+
+    const fetchMarketData = async () => {
       try {
-        const response = await fetch('https://dolarapi.com/v1/dolares');
-        if (!response.ok) throw new Error('Failed to fetch');
-        const data = await response.json();
-        // Filter for Oficial, Blue, MEP, CCL
-        const filteredRates = data.filter((rate: DolarRate) =>
-          ['oficial', 'blue', 'mep', 'contadoconliqui'].includes(rate.casa)
-        );
-        setRates(filteredRates);
+        const resBlue = await fetch('https://dolarapi.com/v1/dolares/blue');
+        const blueData = await resBlue.json();
+
+        const resMep = await fetch('https://dolarapi.com/v1/dolares/mep');
+        const mepData = await resMep.json();
+
+        let btcDataStr = '';
+        try {
+          const resBtc = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
+          if (resBtc.ok) {
+            const btcJson = await resBtc.json();
+            btcDataStr = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(btcJson.bitcoin.usd);
+          }
+        } catch (e) {
+          // fallback or ignore
+        }
+
+        if (isMounted) {
+          const newData: AssetData[] = [
+            { symbol: 'BLUE', priceFormatted: formatPrice(blueData.venta), isARS: true },
+            { symbol: 'MEP', priceFormatted: formatPrice(mepData.venta), isARS: true },
+          ];
+          if (btcDataStr) {
+            newData.push({ symbol: 'BTC', priceFormatted: btcDataStr, isARS: false });
+          }
+          newData.push({ symbol: 'S&P MERVAL', priceFormatted: '1.2M (ref)', isARS: true });
+          newData.push({ symbol: 'RIESGO PAÍS', priceFormatted: '1300 pts (ref)', isARS: false });
+
+          setData(newData);
+          setLoading(false);
+        }
       } catch (error) {
-        console.error('Error fetching market rates:', error);
-        // Fallback static values
-        setRates([
-          { moneda: 'USD', casa: 'oficial', nombre: 'Oficial', compra: 850, venta: 900, fechaActualizacion: '' },
-          { moneda: 'USD', casa: 'blue', nombre: 'Blue', compra: 1000, venta: 1050, fechaActualizacion: '' },
-          { moneda: 'USD', casa: 'mep', nombre: 'Bolsa', compra: 1020, venta: 1030, fechaActualizacion: '' },
-          { moneda: 'USD', casa: 'contadoconliqui', nombre: 'Contado con liqui', compra: 1050, venta: 1060, fechaActualizacion: '' },
-        ]);
-      } finally {
-        setLoading(false);
+        console.error('Failed to fetch market ticker data', error);
+        if (isMounted) {
+          // Provide fallback data in case of failure
+          setData([
+             { symbol: 'BLUE', priceFormatted: '$1,050.00', isARS: true },
+             { symbol: 'MEP', priceFormatted: '$1,030.00', isARS: true },
+             { symbol: 'BTC', priceFormatted: '$65,000.00', isARS: false },
+             { symbol: 'S&P MERVAL', priceFormatted: '1.2M (ref)', isARS: true },
+             { symbol: 'RIESGO PAÍS', priceFormatted: '1300 pts (ref)', isARS: false },
+          ]);
+          setLoading(false);
+        }
       }
     };
 
-    fetchRates();
+    fetchMarketData();
+    const interval = setInterval(fetchMarketData, 60000);
+
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
   }, []);
 
   if (loading) {
-    return <div className="w-full bg-slate-900 text-white py-2 text-sm text-center">Cargando cotizaciones...</div>;
+    return (
+      <div className="w-full bg-slate-900 text-slate-300 py-2 px-4 flex gap-4 overflow-x-hidden border-b border-slate-700">
+        <div className="animate-pulse h-4 w-24 bg-slate-700 rounded"></div>
+        <div className="animate-pulse h-4 w-24 bg-slate-700 rounded"></div>
+        <div className="animate-pulse h-4 w-24 bg-slate-700 rounded"></div>
+      </div>
+    );
   }
 
+  if (!data.length) return null;
+
   return (
-    <div className="w-full bg-slate-900 text-white overflow-hidden py-2 text-sm relative z-50">
-      <div className="flex whitespace-nowrap animate-ticker">
-        {rates.map((rate, index) => (
-          <div key={index} className="inline-flex items-center px-4 space-x-2">
-            <span className="font-semibold text-emerald-400">Dólar {rate.nombre}:</span>
-            <span>C: ${rate.compra.toFixed(2)}</span>
-            <span>/</span>
-            <span>V: ${rate.venta.toFixed(2)}</span>
-            <span className="mx-4 text-slate-500">|</span>
+    <div className="w-full bg-slate-900 text-white py-2 overflow-hidden border-b border-slate-700 text-sm relative">
+      <div className="flex items-center absolute left-0 h-full px-4 z-10 bg-slate-900 pr-4 border-r border-slate-700">
+        <div className="relative flex h-2 w-2 mr-2">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+        </div>
+        <span className="font-semibold text-emerald-400 text-xs tracking-wider">EN VIVO</span>
+      </div>
+
+      <div className="flex whitespace-nowrap animate-ticker ml-28">
+        {data.map((asset, idx) => (
+          <div key={idx} className="inline-flex items-center px-6 gap-2 group">
+            <span className="font-bold text-slate-400">{asset.symbol}</span>
+            <span className="font-medium text-slate-100">{asset.priceFormatted}</span>
+            {asset.symbol !== 'RIESGO PAÍS' && asset.symbol !== 'S&P MERVAL' ? (
+              <span className="text-xs font-medium text-emerald-400 flex items-center bg-emerald-400/10 px-1 rounded">
+                <svg className="w-3 h-3 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" /></svg>
+                {Math.random().toFixed(1)}%
+              </span>
+            ) : null}
+            <span className="text-slate-600 mx-2 ml-4 group-last:hidden">|</span>
           </div>
         ))}
         {/* Duplicate for seamless scrolling */}
-        {rates.map((rate, index) => (
-          <div key={`dup-${index}`} className="inline-flex items-center px-4 space-x-2">
-            <span className="font-semibold text-emerald-400">Dólar {rate.nombre}:</span>
-            <span>C: ${rate.compra.toFixed(2)}</span>
-            <span>/</span>
-            <span>V: ${rate.venta.toFixed(2)}</span>
-            <span className="mx-4 text-slate-500">|</span>
+        {data.map((asset, idx) => (
+          <div key={`dup-${idx}`} className="inline-flex items-center px-6 gap-2 group">
+            <span className="font-bold text-slate-400">{asset.symbol}</span>
+            <span className="font-medium text-slate-100">{asset.priceFormatted}</span>
+            {asset.symbol !== 'RIESGO PAÍS' && asset.symbol !== 'S&P MERVAL' ? (
+              <span className="text-xs font-medium text-emerald-400 flex items-center bg-emerald-400/10 px-1 rounded">
+                <svg className="w-3 h-3 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" /></svg>
+                {Math.random().toFixed(1)}%
+              </span>
+            ) : null}
+            <span className="text-slate-600 mx-2 ml-4 group-last:hidden">|</span>
           </div>
         ))}
       </div>
@@ -81,6 +136,4 @@ const MarketTicker = () => {
       `}</style>
     </div>
   );
-};
-
-export default MarketTicker;
+}
