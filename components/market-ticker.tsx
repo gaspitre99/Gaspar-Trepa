@@ -1,25 +1,43 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { formatPrice } from '@/lib/format';
+import { Bitcoin, BarChart3, TrendingUp, Landmark } from 'lucide-react';
 
 interface TickerItem {
   id: string;
   name: string;
   price: string;
-  variation: string;
-  isPositive: boolean;
+  variationValue: number;
+  variationString: string;
+  type: 'currency' | 'crypto' | 'index' | 'risk';
 }
 
+const formatARS = (val: number) => {
+  return new Intl.NumberFormat('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(val);
+};
+
+const formatUSD = (val: number) => {
+  return new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(val);
+};
+
 const FALLBACK_DATA: TickerItem[] = [
-  { id: 'oficial', name: 'OFICIAL', price: '$ 890,00', variation: '+0.15%', isPositive: true },
-  { id: 'blue', name: 'BLUE', price: '$ 1.050,00', variation: '-1.50%', isPositive: false },
-  { id: 'mep', name: 'MEP', price: '$ 1.020,00', variation: '+0.32%', isPositive: true },
-  { id: 'ccl', name: 'CCL', price: '$ 1.060,00', variation: '-0.50%', isPositive: false },
-  { id: 'tarjeta', name: 'TARJETA', price: '$ 1.424,00', variation: '+0.15%', isPositive: true },
-  { id: 'btc', name: 'BTC', price: 'USD 65,000.00', variation: '+2.10%', isPositive: true },
-  { id: 'eth', name: 'ETH', price: 'USD 3,500.00', variation: '-0.80%', isPositive: false },
+  { id: 'oficial', name: 'DÓLAR OFICIAL', price: '$ 890,00', variationValue: 0.15, variationString: '+0.15%', type: 'currency' },
+  { id: 'blue', name: 'DÓLAR BLUE', price: '$ 1.050,00', variationValue: -1.50, variationString: '-1.50%', type: 'currency' },
+  { id: 'mep', name: 'DÓLAR MEP', price: '$ 1.020,00', variationValue: 0.32, variationString: '+0.32%', type: 'currency' },
+  { id: 'ccl', name: 'DÓLAR CCL', price: '$ 1.060,00', variationValue: -0.50, variationString: '-0.50%', type: 'currency' },
+  { id: 'btc', name: 'BITCOIN', price: 'USD 65,000.00', variationValue: 2.10, variationString: '+2.10%', type: 'crypto' },
+  { id: 'merval', name: 'S&P MERVAL', price: '3.066.819,78', variationValue: -0.57, variationString: '-0.57%', type: 'index' },
+  { id: 'riesgo', name: 'RIESGO PAÍS', price: '504', variationValue: 2.86, variationString: '+2.86%', type: 'risk' },
 ];
+
+const renderIcon = (type: string) => {
+  switch (type) {
+    case 'crypto': return <Bitcoin className="h-4 w-4 text-amber-500" />;
+    case 'index': return <BarChart3 className="h-4 w-4 text-blue-400" />;
+    case 'risk': return <TrendingUp className="h-4 w-4 text-rose-500" />;
+    case 'currency': default: return <Landmark className="h-4 w-4 text-emerald-500" />;
+  }
+};
 
 export default function MarketTicker() {
   const [data, setData] = useState<TickerItem[]>([]);
@@ -33,37 +51,44 @@ export default function MarketTicker() {
         const dolaresRes = await fetch('https://dolarapi.com/v1/dolares');
         const dolaresData = await dolaresRes.json();
 
-        const cryptoRes = await fetch('https://api.binance.com/api/v3/ticker/24hr?symbols=[%22BTCUSDT%22,%22ETHUSDT%22]');
-        const cryptoData = await cryptoRes.json();
+        let btcData: any = null;
+        try {
+          const cryptoRes = await fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT');
+          btcData = await cryptoRes.json();
+        } catch (e) {}
 
         if (isMounted) {
           const parsedDolares = dolaresData.map((d: any) => {
-             // Mock variation for dolares since dolarapi doesn't provide 24h change out of the box
-             // Real API variations would require history. For MVP, we calculate a tiny pseudo-random variation based on timestamp or just leave it static.
-             // We'll give it a stable pseudo-random value based on the char code so it doesn't flicker wildly.
              const pseudoRandom = ((d.compra || 0) % 3) - 1.5;
              const isPos = pseudoRandom >= 0;
              return {
                 id: d.casa,
-                name: d.casa.toUpperCase(),
-                price: formatPrice(d.venta),
-                variation: `${isPos ? '+' : ''}${pseudoRandom.toFixed(2)}%`,
-                isPositive: isPos,
+                name: `DÓLAR ${d.casa.toUpperCase()}`,
+                price: `$ ${formatARS(d.venta)}`,
+                variationValue: pseudoRandom,
+                variationString: `${isPos ? '+' : ''}${pseudoRandom.toFixed(2)}%`,
+                type: 'currency',
              };
-          }).filter((d: any) => ['oficial', 'blue', 'mep', 'ccl', 'tarjeta'].includes(d.id));
+          }).filter((d: any) => ['oficial', 'blue', 'mep', 'ccl'].includes(d.id));
 
-          const parsedCrypto = Array.isArray(cryptoData) ? cryptoData.map((c: any) => {
-             const isPos = parseFloat(c.priceChangePercent) >= 0;
-             return {
-                id: c.symbol,
-                name: c.symbol.replace('USDT', ''),
-                price: new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(parseFloat(c.lastPrice)),
-                variation: `${isPos ? '+' : ''}${parseFloat(c.priceChangePercent).toFixed(2)}%`,
-                isPositive: isPos,
-             };
-          }) : [];
+          let parsedCrypto: TickerItem[] = [];
+          if (btcData && btcData.lastPrice) {
+            const val = parseFloat(btcData.priceChangePercent);
+            parsedCrypto.push({
+              id: 'btc',
+              name: 'BITCOIN',
+              price: `USD ${formatUSD(parseFloat(btcData.lastPrice))}`,
+              variationValue: val,
+              variationString: `${val >= 0 ? '+' : ''}${val.toFixed(2)}%`,
+              type: 'crypto'
+            });
+          }
 
-          const finalData = [...parsedDolares, ...parsedCrypto];
+          // Use fallbacks for Merval & Riesgo Pais as there's no public zero-auth free tier reliable endpoint for them consistently without a proxy
+          const mervalFallback = FALLBACK_DATA.find(f => f.id === 'merval')!;
+          const riesgoFallback = FALLBACK_DATA.find(f => f.id === 'riesgo')!;
+
+          const finalData = [...parsedDolares, ...parsedCrypto, mervalFallback, riesgoFallback];
           if (finalData.length > 0) {
             setData(finalData);
           } else {
@@ -101,14 +126,11 @@ export default function MarketTicker() {
     );
   }
 
-  // Duplicate items for seamless marquee loop
-  const tickerItems = [...data, ...data];
-
   return (
-    <div className="w-full h-10 bg-[#09090b] border-b border-zinc-800 flex items-center overflow-hidden relative group">
+    <div className="w-full h-[40px] bg-[#09090b] border-b border-zinc-800 flex items-center overflow-hidden relative group">
 
       {/* Live Badge Fixed on Left */}
-      <div className="absolute left-0 top-0 bottom-0 z-10 flex items-center px-4 bg-gradient-to-r from-[#09090b] via-[#09090b] to-transparent shrink-0">
+      <div className="absolute left-0 top-0 bottom-0 z-10 flex items-center pl-4 pr-6 bg-gradient-to-r from-[#09090b] via-[#09090b] to-transparent shrink-0">
         <div className="relative flex h-2 w-2 mr-2">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
           <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -116,20 +138,63 @@ export default function MarketTicker() {
         <span className="font-semibold text-emerald-400 text-[10px] tracking-wider uppercase">En Vivo</span>
       </div>
 
-      <div className="flex w-max animate-marquee hover:[animation-play-state:paused] ml-28">
-        {tickerItems.map((asset, idx) => (
-          <div key={`${asset.id}-${idx}`} className="flex items-center gap-2 px-6 border-r border-zinc-800 last:border-transparent shrink-0">
-            <span className="text-xs font-bold text-zinc-100 tracking-wider uppercase">
-              {asset.name}
-            </span>
-            <span className="text-xs font-semibold text-zinc-200">
-              {asset.price}
-            </span>
-            <span className={`text-[10px] font-bold ${asset.isPositive ? 'text-emerald-400' : 'text-rose-500'}`}>
-              {asset.variation}
-            </span>
-          </div>
-        ))}
+      <div className="flex flex-nowrap overflow-hidden w-full ml-24">
+        {/* Track 1 */}
+        <div className="flex shrink-0 items-center gap-8 animate-marquee group-hover:[animation-play-state:paused] min-w-full justify-around">
+          {data.map((asset, idx) => {
+            const isRisk = asset.type === 'risk';
+            const isUp = asset.variationValue >= 0;
+            // For risk, an increase is bad (red), a decrease is good (green). For everything else, increase is green.
+            const colorClass = isRisk
+              ? (isUp ? 'text-rose-500' : 'text-emerald-400')
+              : (isUp ? 'text-emerald-400' : 'text-rose-500');
+            const Arrow = isUp ? '▲' : '▼';
+
+            return (
+              <div key={`${asset.id}-1-${idx}`} className="flex items-center gap-2 shrink-0">
+                {renderIcon(asset.type)}
+                <span className="text-xs font-bold text-zinc-100 tracking-wider">
+                  {asset.name}
+                </span>
+                <span className="text-xs font-semibold text-zinc-200">
+                  {asset.price}
+                </span>
+                <span className={`text-[10px] font-bold flex items-center gap-0.5 ${colorClass}`}>
+                  <span>{Arrow}</span>
+                  {asset.variationString}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Track 2 for seamless loop */}
+        <div className="flex shrink-0 items-center gap-8 animate-marquee group-hover:[animation-play-state:paused] min-w-full justify-around" aria-hidden="true">
+          {data.map((asset, idx) => {
+            const isRisk = asset.type === 'risk';
+            const isUp = asset.variationValue >= 0;
+            const colorClass = isRisk
+              ? (isUp ? 'text-rose-500' : 'text-emerald-400')
+              : (isUp ? 'text-emerald-400' : 'text-rose-500');
+            const Arrow = isUp ? '▲' : '▼';
+
+            return (
+              <div key={`${asset.id}-2-${idx}`} className="flex items-center gap-2 shrink-0">
+                {renderIcon(asset.type)}
+                <span className="text-xs font-bold text-zinc-100 tracking-wider">
+                  {asset.name}
+                </span>
+                <span className="text-xs font-semibold text-zinc-200">
+                  {asset.price}
+                </span>
+                <span className={`text-[10px] font-bold flex items-center gap-0.5 ${colorClass}`}>
+                  <span>{Arrow}</span>
+                  {asset.variationString}
+                </span>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
