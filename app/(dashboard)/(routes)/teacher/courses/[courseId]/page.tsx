@@ -8,6 +8,8 @@ import { IconBadge } from '@/components/icon-badge';
 
 import TitleForms from './_components/title-forms';
 import DescriptionForms from './_components/desctiption-forms';
+import PriceForm from './_components/price-form';
+import ExternalCheckoutForm from './_components/external-checkout-form';
 
 const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
   const { userId } = auth();
@@ -45,6 +47,10 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
           </div>
           <TitleForms initialData={course} courseId={course.id} />
           <DescriptionForms initialData={course} courseId={course.id} />
+        </div>
+        <div>
+          <PriceForm initialData={course} courseId={course.id} />
+          <ExternalCheckoutForm initialData={course} courseId={course.id} />
         </div>
       </div>
     </div>
