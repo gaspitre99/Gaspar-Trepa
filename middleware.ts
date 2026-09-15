@@ -1,10 +1,21 @@
 import { authMiddleware } from '@clerk/nextjs';
+import { NextResponse } from 'next/server';
 
-// This example protects all routes including api/trpc routes
-// Please edit this to allow other routes to be public as needed.
-// See https://clerk.com/docs/references/nextjs/auth-middleware for more information about configuring your Middleware
-export default authMiddleware({});
+const hasClerkKeys =
+  Boolean(process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY) &&
+  Boolean(process.env.CLERK_SECRET_KEY);
+
+export default hasClerkKeys
+  ? authMiddleware({
+      publicRoutes: [
+        "/",
+        "/herramientas",
+        "/api/market-data",
+        "/api/uploadthing",
+      ],
+    })
+  : () => NextResponse.next();
 
 export const config = {
-  matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)'],
+  matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
 };
