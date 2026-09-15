@@ -11,27 +11,27 @@ import { useRouter } from 'next/navigation';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { formatPrice } from '@/lib/format';
+import { Course } from '@prisma/client';
 
-type TitleFormsProps = {
-  initialData: {
-    title: string;
-  };
+type PriceFormProps = {
+  initialData: Course;
   courseId: string;
 };
 
 const formSchema = z.object({
-  title: z.string().min(1, {
-    message: 'Title is required',
-  }),
+  price: z.coerce.number().min(0, { message: 'El precio debe ser 0 o superior' }),
 });
 
-export default function TitleForms({ courseId, initialData }: TitleFormsProps) {
+export default function PriceForm({ courseId, initialData }: PriceFormProps) {
   const [isEditing, setIsEditing] = useState(false);
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: initialData,
+    defaultValues: {
+      price: initialData?.price || undefined,
+    },
   });
 
   const { isSubmitting, isValid } = form.formState;
@@ -40,47 +40,47 @@ export default function TitleForms({ courseId, initialData }: TitleFormsProps) {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       await axios.patch(`/api/courses/${courseId}`, values);
-      toast.success('Course updated');
+      toast.success('Curso actualizado');
       toggleEdit();
       router.refresh();
     } catch {
-      toast.error('Something went wrong');
+      toast.error('Algo salió mal');
     }
   };
   return (
     <div className='mt-6 boder bg-slate-100 rounded-md p-4'>
       <div className='font-medium flex items-center justify-between gapy1'>
-        Course title
+        Precio del curso
         <Button onClick={toggleEdit} variant={'ghost'}>
           {isEditing ? (
-            <>Cancel</>
+            <>Cancelar</>
           ) : (
             <>
               <Pencil className='h-4 w-4 mr-2' />
-              Edit title
+              Editar precio
             </>
           )}
         </Button>
       </div>
       {!isEditing ? (
-        <p className='text-sm mt-2'>{initialData.title}</p>
+        <p className='text-sm mt-2'>{initialData.price !== null ? formatPrice(initialData.price) : 'Sin precio'}</p>
       ) : (
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <FormField
               control={form.control}
-              name='title'
+              name='price'
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input disabled={isSubmitting} placeholder='e.g "Advance web development"' {...field} />
+                    <Input type="number" disabled={isSubmitting} placeholder='Ej. "15000"' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
             <div className='flex items-center mt-2 gap-x-2'>
-              <Button disabled={!isValid || isSubmitting}>Save</Button>
+              <Button disabled={!isValid || isSubmitting}>Guardar</Button>
             </div>
           </form>
         </Form>

@@ -8,6 +8,8 @@ import { IconBadge } from '@/components/icon-badge';
 
 import TitleForms from './_components/title-forms';
 import DescriptionForms from './_components/desctiption-forms';
+import PriceForm from './_components/price-form';
+import ExternalCheckoutForm from './_components/external-checkout-form';
 
 const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
   const { userId } = auth();
@@ -33,18 +35,22 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
     <div className='p-6'>
       <div className='flex items-center justify-between'>
         <div className='flex flex-col gap-y-2'>
-          <h1 className='text-2xl font-medium'>Course Setup</h1>
-          <span className='text-sm text-slate-700'>Comple all fields {completionText}</span>
+          <h1 className='text-2xl font-medium'>Configuración del curso</h1>
+          <span className='text-sm text-slate-700'>Completa todos los campos {completionText}</span>
         </div>
       </div>
       <div className='grid grid-cols-1 md:grid-cols-2 gap-6 mt-16'>
         <div>
           <div className='flex items-center'>
             <IconBadge icon={LayoutDashboard} />
-            <h2 className='text-xl'>Customize your course</h2>
+            <h2 className='text-xl'>Personaliza tu curso</h2>
           </div>
           <TitleForms initialData={course} courseId={course.id} />
           <DescriptionForms initialData={course} courseId={course.id} />
+        </div>
+        <div>
+          <PriceForm initialData={course} courseId={course.id} />
+          <ExternalCheckoutForm initialData={course} courseId={course.id} />
         </div>
       </div>
     </div>

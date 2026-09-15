@@ -2,7 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 
 const Logo = () => {
-  return <Image height={130} width={130} alt='logo' src='/logo.svg' />;
+  return <div className="font-bold text-xl text-white tracking-tight">Hablemos de Economía</div>;
 };
 
 export default Logo;
