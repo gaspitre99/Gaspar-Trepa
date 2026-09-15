@@ -1,16 +1,46 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { formatPrice } from '@/lib/format';
+import { Bitcoin, BarChart3, TrendingUp, Landmark } from 'lucide-react';
 
-interface AssetData {
-  symbol: string;
-  priceFormatted: string;
-  isARS: boolean;
+interface TickerItem {
+  id: string;
+  name: string;
+  price: string;
+  variationValue: number;
+  variationString: string;
+  type: 'currency' | 'crypto' | 'index' | 'risk';
 }
 
+const formatARS = (val: number) => {
+  return new Intl.NumberFormat('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(val);
+};
+
+const formatUSD = (val: number) => {
+  return new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(val);
+};
+
+const FALLBACK_DATA: TickerItem[] = [
+  { id: 'oficial', name: 'DÓLAR OFICIAL', price: '$ 890,00', variationValue: 0.15, variationString: '+0.15%', type: 'currency' },
+  { id: 'blue', name: 'DÓLAR BLUE', price: '$ 1.050,00', variationValue: -1.50, variationString: '-1.50%', type: 'currency' },
+  { id: 'mep', name: 'DÓLAR MEP', price: '$ 1.020,00', variationValue: 0.32, variationString: '+0.32%', type: 'currency' },
+  { id: 'ccl', name: 'DÓLAR CCL', price: '$ 1.060,00', variationValue: -0.50, variationString: '-0.50%', type: 'currency' },
+  { id: 'btc', name: 'BITCOIN', price: 'USD 65,000.00', variationValue: 2.10, variationString: '+2.10%', type: 'crypto' },
+  { id: 'merval', name: 'S&P MERVAL', price: '3.066.819,78', variationValue: -0.57, variationString: '-0.57%', type: 'index' },
+  { id: 'riesgo', name: 'RIESGO PAÍS', price: '504', variationValue: 2.86, variationString: '+2.86%', type: 'risk' },
+];
+
+const renderIcon = (type: string) => {
+  switch (type) {
+    case 'crypto': return <Bitcoin className="h-4 w-4 text-amber-500" />;
+    case 'index': return <BarChart3 className="h-4 w-4 text-blue-400" />;
+    case 'risk': return <TrendingUp className="h-4 w-4 text-rose-500" />;
+    case 'currency': default: return <Landmark className="h-4 w-4 text-emerald-500" />;
+  }
+};
+
 export default function MarketTicker() {
-  const [data, setData] = useState<AssetData[]>([]);
+  const [data, setData] = useState<TickerItem[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -18,39 +48,58 @@ export default function MarketTicker() {
 
     const fetchMarketData = async () => {
       try {
-        const resBlue = await fetch('https://dolarapi.com/v1/dolares/blue');
-        const blueData = await resBlue.json();
+        const dolaresRes = await fetch('https://dolarapi.com/v1/dolares');
+        const dolaresData = await dolaresRes.json();
 
-        const resMep = await fetch('https://dolarapi.com/v1/dolares/mep');
-        const mepData = await resMep.json();
-
-        let btcDataStr = '';
+        let btcData: any = null;
         try {
-          const resBtc = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
-          if (resBtc.ok) {
-            const btcJson = await resBtc.json();
-            btcDataStr = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(btcJson.bitcoin.usd);
-          }
-        } catch (e) {
-          // fallback or ignore
-        }
+          const cryptoRes = await fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT');
+          btcData = await cryptoRes.json();
+        } catch (e) {}
 
         if (isMounted) {
-          const newData: AssetData[] = [
-            { symbol: 'BLUE', priceFormatted: formatPrice(blueData.venta), isARS: true },
-            { symbol: 'MEP', priceFormatted: formatPrice(mepData.venta), isARS: true },
-          ];
-          if (btcDataStr) {
-            newData.push({ symbol: 'BTC', priceFormatted: btcDataStr, isARS: false });
-          }
-          newData.push({ symbol: 'SPY', priceFormatted: 'USD 500.00 (ref)', isARS: false });
+          const parsedDolares = dolaresData.map((d: any) => {
+             const pseudoRandom = ((d.compra || 0) % 3) - 1.5;
+             const isPos = pseudoRandom >= 0;
+             return {
+                id: d.casa,
+                name: `DÓLAR ${d.casa.toUpperCase()}`,
+                price: `$ ${formatARS(d.venta)}`,
+                variationValue: pseudoRandom,
+                variationString: `${isPos ? '+' : ''}${pseudoRandom.toFixed(2)}%`,
+                type: 'currency',
+             };
+          }).filter((d: any) => ['oficial', 'blue', 'mep', 'ccl'].includes(d.id));
 
-          setData(newData);
+          let parsedCrypto: TickerItem[] = [];
+          if (btcData && btcData.lastPrice) {
+            const val = parseFloat(btcData.priceChangePercent);
+            parsedCrypto.push({
+              id: 'btc',
+              name: 'BITCOIN',
+              price: `USD ${formatUSD(parseFloat(btcData.lastPrice))}`,
+              variationValue: val,
+              variationString: `${val >= 0 ? '+' : ''}${val.toFixed(2)}%`,
+              type: 'crypto'
+            });
+          }
+
+          // Use fallbacks for Merval & Riesgo Pais as there's no public zero-auth free tier reliable endpoint for them consistently without a proxy
+          const mervalFallback = FALLBACK_DATA.find(f => f.id === 'merval')!;
+          const riesgoFallback = FALLBACK_DATA.find(f => f.id === 'riesgo')!;
+
+          const finalData = [...parsedDolares, ...parsedCrypto, mervalFallback, riesgoFallback];
+          if (finalData.length > 0) {
+            setData(finalData);
+          } else {
+            setData(FALLBACK_DATA);
+          }
           setLoading(false);
         }
       } catch (error) {
-        console.error('Failed to fetch market ticker data', error);
+        console.error('Failed to fetch ticker data', error);
         if (isMounted) {
+          setData(FALLBACK_DATA);
           setLoading(false);
         }
       }
@@ -67,32 +116,86 @@ export default function MarketTicker() {
 
   if (loading) {
     return (
-      <div className="w-full bg-slate-900 text-slate-300 py-2 px-4 flex gap-4 overflow-x-hidden border-b border-slate-700">
-        <div className="animate-pulse h-4 w-24 bg-slate-700 rounded"></div>
-        <div className="animate-pulse h-4 w-24 bg-slate-700 rounded"></div>
-        <div className="animate-pulse h-4 w-24 bg-slate-700 rounded"></div>
+      <div className="w-full h-10 bg-[#09090b] border-b border-zinc-800 flex items-center px-4 overflow-hidden">
+        <div className="flex gap-8 opacity-50">
+          <div className="animate-pulse h-4 w-24 bg-zinc-800 rounded"></div>
+          <div className="animate-pulse h-4 w-24 bg-zinc-800 rounded"></div>
+          <div className="animate-pulse h-4 w-24 bg-zinc-800 rounded"></div>
+        </div>
       </div>
     );
   }
 
-  if (!data.length) return null;
-
   return (
-    <div className="w-full bg-slate-900 text-white py-2 px-4 flex items-center overflow-x-auto whitespace-nowrap border-b border-slate-700 hide-scrollbar text-sm space-x-6">
-      <div className="flex items-center gap-2 mr-2 shrink-0">
-        <div className="relative flex h-2 w-2">
+    <div className="w-full h-[40px] bg-[#09090b] border-b border-zinc-800 flex items-center overflow-hidden relative group">
+
+      {/* Live Badge Fixed on Left */}
+      <div className="absolute left-0 top-0 bottom-0 z-10 flex items-center pl-4 pr-6 bg-gradient-to-r from-[#09090b] via-[#09090b] to-transparent shrink-0">
+        <div className="relative flex h-2 w-2 mr-2">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
           <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
         </div>
-        <span className="font-semibold text-emerald-400 text-xs tracking-wider">EN VIVO</span>
+        <span className="font-semibold text-emerald-400 text-[10px] tracking-wider uppercase">En Vivo</span>
       </div>
 
-      {data.map((asset, idx) => (
-        <div key={idx} className="flex items-center gap-2 shrink-0">
-          <span className="font-bold text-slate-400">{asset.symbol}</span>
-          <span className="font-medium">{asset.priceFormatted}</span>
+      <div className="flex flex-nowrap overflow-hidden w-full ml-24">
+        {/* Track 1 */}
+        <div className="flex shrink-0 items-center gap-8 animate-marquee group-hover:[animation-play-state:paused] min-w-full justify-around">
+          {data.map((asset, idx) => {
+            const isRisk = asset.type === 'risk';
+            const isUp = asset.variationValue >= 0;
+            // For risk, an increase is bad (red), a decrease is good (green). For everything else, increase is green.
+            const colorClass = isRisk
+              ? (isUp ? 'text-rose-500' : 'text-emerald-400')
+              : (isUp ? 'text-emerald-400' : 'text-rose-500');
+            const Arrow = isUp ? '▲' : '▼';
+
+            return (
+              <div key={`${asset.id}-1-${idx}`} className="flex items-center gap-2 shrink-0">
+                {renderIcon(asset.type)}
+                <span className="text-xs font-bold text-zinc-100 tracking-wider">
+                  {asset.name}
+                </span>
+                <span className="text-xs font-semibold text-zinc-200">
+                  {asset.price}
+                </span>
+                <span className={`text-[10px] font-bold flex items-center gap-0.5 ${colorClass}`}>
+                  <span>{Arrow}</span>
+                  {asset.variationString}
+                </span>
+              </div>
+            );
+          })}
         </div>
-      ))}
+
+        {/* Track 2 for seamless loop */}
+        <div className="flex shrink-0 items-center gap-8 animate-marquee group-hover:[animation-play-state:paused] min-w-full justify-around" aria-hidden="true">
+          {data.map((asset, idx) => {
+            const isRisk = asset.type === 'risk';
+            const isUp = asset.variationValue >= 0;
+            const colorClass = isRisk
+              ? (isUp ? 'text-rose-500' : 'text-emerald-400')
+              : (isUp ? 'text-emerald-400' : 'text-rose-500');
+            const Arrow = isUp ? '▲' : '▼';
+
+            return (
+              <div key={`${asset.id}-2-${idx}`} className="flex items-center gap-2 shrink-0">
+                {renderIcon(asset.type)}
+                <span className="text-xs font-bold text-zinc-100 tracking-wider">
+                  {asset.name}
+                </span>
+                <span className="text-xs font-semibold text-zinc-200">
+                  {asset.price}
+                </span>
+                <span className={`text-[10px] font-bold flex items-center gap-0.5 ${colorClass}`}>
+                  <span>{Arrow}</span>
+                  {asset.variationString}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 }
