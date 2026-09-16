@@ -1,45 +1,41 @@
-export interface WalletData {
-  id: string;
-  name: string;
-  tna: number; // Tasa Nominal Anual
-  dailyYield: number; // Rendimiento Diario
-  limitCap: number; // Límite de monto remunerado
-}
+import { WalletYield } from "@/types/wallet";
 
-export const walletsData: WalletData[] = [
+export const walletsData: WalletYield[] = [
   {
-    id: "naranjax",
+    id: "naranja-x",
     name: "Naranja X",
-    tna: 42.0,
-    dailyYield: 0.115,
-    limitCap: 5000000,
+    tna: 42,
+    dailyYield: (42 / 100) / 365,
+    maxCapARS: 600000,
+    payoutFrequency: "daily",
   },
   {
-    id: "personalpay",
+    id: "personal-pay",
     name: "Personal Pay",
-    tna: 38.5,
-    dailyYield: 0.105,
-    limitCap: 3000000,
+    tna: 37.5,
+    dailyYield: (37.5 / 100) / 365,
+    payoutFrequency: "daily",
+  },
+  {
+    id: "mercado-pago",
+    name: "Mercado Pago",
+    tna: 33,
+    dailyYield: (33 / 100) / 365,
+    payoutFrequency: "daily",
   },
   {
     id: "uala",
     name: "Ualá",
-    tna: 36.0,
-    dailyYield: 0.098,
-    limitCap: 5000000,
-  },
-  {
-    id: "mercadopago",
-    name: "Mercado Pago",
-    tna: 34.2,
-    dailyYield: 0.093,
-    limitCap: 0, // 0 implies no limit for this mock
+    tna: 35,
+    dailyYield: (35 / 100) / 365,
+    maxCapARS: 500000,
+    payoutFrequency: "daily",
   },
   {
     id: "prex",
     name: "Prex",
-    tna: 35.5,
-    dailyYield: 0.097,
-    limitCap: 2000000,
+    tna: 36,
+    dailyYield: (36 / 100) / 365,
+    payoutFrequency: "daily",
   }
 ];

@@ -1,4 +1,12 @@
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Editor de Curso",
+  description: "Edita el contenido y configuración de tu curso.",
+};
+
 export const dynamic = "force-dynamic";
+
 import React from 'react';
 import { auth } from '@clerk/nextjs';
 import { LayoutDashboard } from 'lucide-react';
