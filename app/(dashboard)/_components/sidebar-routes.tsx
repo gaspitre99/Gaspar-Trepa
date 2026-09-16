@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { Compass, Layout, Wrench, BookOpen, Calculator, Gamepad2, List, BarChart } from 'lucide-react';
+import { Compass, Layout, Wrench, BookOpen, Calculator, Gamepad2, List, BarChart, BrainCircuit } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 
 import SidebarItem from './sidebar-item';
@@ -25,6 +25,11 @@ const routes = [
     icon: Gamepad2,
     label: 'Preciodle',
     href: '/juegos/preciodle',
+  },
+  {
+    icon: BrainCircuit,
+    label: 'Real o Chamuyo',
+    href: '/juegos/real-o-chamuyo',
   },
   {
     icon: BookOpen,
