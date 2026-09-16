@@ -8,8 +8,9 @@ export const dynamic = 'force-dynamic';
 export async function POST(req: Request) {
   try {
     const { userId } = auth();
-    const effectiveUserId = userId || 'admin_seed_user'; // fallback for public testing
+    const effectiveUserId = userId || "guest_teacher";
     const { title } = await req.json();
+
     const course = await db.course.create({
       data: {
         userId: effectiveUserId,
