@@ -1,0 +1,15 @@
+
+> lms-course@0.1.0 start
+> next start
+
+Error: ENOENT: no such file or directory, open '/app/.next/BUILD_ID'
+    at async open (node:internal/fs/promises:636:25)
+    at async Object.readFile (node:internal/fs/promises:1235:14)
+    at async setupFsCheck (/app/node_modules/next/dist/server/lib/router-utils/filesystem.js:142:19)
+    at async initialize (/app/node_modules/next/dist/server/lib/router-server.js:56:23)
+    at async Server.<anonymous> (/app/node_modules/next/dist/server/lib/start-server.js:221:36) {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/app/.next/BUILD_ID'
+}
