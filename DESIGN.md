@@ -8,10 +8,11 @@ Este documento establece las reglas estrictas de UI/UX para mantener la consiste
 - **JetBrains Mono (Tabular):** Exclusivo para números que se comparan en columna o que cambian en el tiempo: métricas, precios, duraciones, porcentajes, timestamps.
 
 ## 2. Paleta de Colores y Formas
-- **Fondos/Superficies:** Neutros (`white` / `zinc-900`). Las superficies siempre deben tener el token `surface`.
-- **Bordes:** En una estética financiera, no usamos sombras para destacar. Usamos líneas finas (`hairline`). Bordes sutiles (`zinc-200` light / `zinc-800` dark).
+- **Fondos/Superficies:** Neutros, usando la escala `slate` (`white` / `slate-900` para componentes, `slate-50` / `slate-950` para fondo global). Las superficies siempre deben tener el token `surface`.
+- **Bordes:** En una estética financiera, no usamos sombras para destacar. Usamos líneas finas (`hairline`). Bordes sutiles (`slate-200` light / `slate-800` dark). Excepción: Imágenes Hero pueden usar una sombra sutil (`shadow-sm`).
+- **Acento Primario (Azul):** El color azul profundo (`blue-700` light / `blue-600` dark) se usa EXCLUSIVAMENTE para botones primarios, estados activos o el logo.
 - **Semántica:** Colores vibrantes (verde/rojo) reservados exclusivamente para variaciones numéricas (ganancias, pérdidas, éxito, error).
-- **Links:** Se utiliza jerarquía por peso, no por color. `underline underline-offset-4 decoration-zinc-300 hover:decoration-zinc-900`.
+- **Links:** Se utiliza jerarquía por peso, no por color. `underline underline-offset-4 decoration-slate-300 hover:decoration-slate-900`.
 
 ## 3. Escala de Espaciado (Restringida)
 Solo se permiten estos tres niveles de espaciado macro:

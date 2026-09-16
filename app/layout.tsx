@@ -6,6 +6,7 @@ import { ClerkProvider } from '@clerk/nextjs';
 import { esES } from '@clerk/localizations';
 
 import ToastProvider from '@/components/providers/toaster-provider';
+import { ThemeProvider } from '@/components/providers/theme-provider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -23,10 +24,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
   return (
     <ClerkProvider localization={esES as any} publishableKey={publishableKey}>
-      <html lang='es'>
+      <html lang='es' suppressHydrationWarning>
         <body className={inter.className}>
-          <ToastProvider/>
-          {children}
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+          >
+            <ToastProvider/>
+            {children}
+          </ThemeProvider>
         </body>
       </html>
     </ClerkProvider>

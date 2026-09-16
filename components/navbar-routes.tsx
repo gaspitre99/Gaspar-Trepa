@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { UserButton } from '@clerk/nextjs';
 
 import { Button } from './ui/button';
+import { ThemeToggle } from './theme-toggle';
 
 const NavbarRoutes = () => {
   const pathname = usePathname();
@@ -14,7 +15,8 @@ const NavbarRoutes = () => {
   const isTeacherPage = pathname?.startsWith('/teacher');
   const isPlayerPage = pathname?.includes('/chaper');
   return (
-    <div className='flex gap-x-2 ml-auto'>
+    <div className='flex items-center gap-x-2 ml-auto'>
+      <ThemeToggle />
       {isTeacherPage || isPlayerPage ? (
         <Link href='/'>
           <Button size='sm' variant='ghost'>
