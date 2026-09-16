@@ -118,7 +118,7 @@ export default function PortfolioRoulette() {
           disabled={spinning}
           className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white border-none"
         >
-          {spinning ? 'Girando...' : 'Girar Estrategia'}
+          {spinning ? 'Girando...' : 'Ver Cartera Teórica'}
         </Button>
         {result && (
           <Button onClick={share} variant="outline" className="border-slate-600 text-slate-900 bg-emerald-100 hover:bg-emerald-200">

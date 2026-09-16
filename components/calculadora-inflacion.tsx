@@ -19,12 +19,12 @@ export default function CalculadoraInflacion() {
   const tasaMensualNominal = tna / 12 / 100;
   const tasaMensualInflacion = inflacion / 100;
 
-  const capitalFinalNominal = capital * (1 + tasaMensualNominal);
-  const poderAdquisitivoNecesario = capital * (1 + tasaMensualInflacion);
-  const gananciaReal = capitalFinalNominal - poderAdquisitivoNecesario;
+  const capitalFinalNominal = tna > 300 ? 0 : capital * (1 + tasaMensualNominal);
+  const poderAdquisitivoNecesario = tna > 300 ? 0 : capital * (1 + tasaMensualInflacion);
+  const gananciaReal = tna > 300 ? 0 : capitalFinalNominal - poderAdquisitivoNecesario;
 
   const isPositivo = gananciaReal > 0;
-  const realYieldPercentage = (gananciaReal / capital) * 100;
+  const realYieldPercentage = tna > 300 ? 0 : (gananciaReal / capital) * 100;
 
   useEffect(() => {
     if (realYieldPercentage > 5) {
@@ -73,12 +73,15 @@ export default function CalculadoraInflacion() {
           <input
             type='range'
             min="0"
-            max="200"
+            max="300"
             step="1"
-            value={tna}
+            value={tna > 300 ? 300 : tna}
             onChange={(e) => setTna(Number(e.target.value))}
             className="w-full accent-emerald-500"
           />
+          {tna > 300 && (
+            <p className="text-rose-500 text-xs mt-1 font-semibold">Parámetro fuera del rango de mercado habitual</p>
+          )}
         </div>
 
         <div>
@@ -104,9 +107,14 @@ export default function CalculadoraInflacion() {
         </div>
         <div className='flex justify-between items-center pt-3 border-t border-slate-700'>
           <span className='font-medium text-slate-300'>Resultado Real:</span>
-          <span className={`font-bold text-lg ${isPositivo ? 'text-emerald-400' : 'text-rose-400'}`}>
-            {isPositivo ? '+' : ''}{formatPrice(gananciaReal)}
-          </span>
+          <div className="flex flex-col items-end">
+            <span className={`font-bold text-lg ${isPositivo ? 'text-emerald-400' : 'text-rose-400'}`}>
+              {isPositivo ? '+' : ''}{formatPrice(gananciaReal)}
+            </span>
+            <span className="text-[10px] text-zinc-500 leading-tight mt-1 text-right">
+              *Proyección teórica. No contempla comisiones ni impuestos.
+            </span>
+          </div>
         </div>
 
         <div className='mt-4 pt-4 border-t border-slate-700'>
@@ -129,7 +137,7 @@ export default function CalculadoraInflacion() {
       <div className="mt-6 pt-4 text-center relative z-10">
          <p className="text-xs text-slate-400 mb-2">Nivel Desbloqueado: Estratega de Renta Fija</p>
          <Link href="/teacher/courses" className="text-sm font-semibold text-emerald-400 hover:text-emerald-300 hover:underline">
-           ¿Querés armar esta cartera en tu ALyC real paso a paso? Mirá la clase práctica. &rarr;
+           ¿Querés aprender a operar en un ALyC? Mirá esta clase práctica. &rarr;
          </Link>
       </div>
     </div>
