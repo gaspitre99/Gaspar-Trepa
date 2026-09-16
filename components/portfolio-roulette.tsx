@@ -59,9 +59,9 @@ export default function PortfolioRoulette() {
   };
 
   return (
-    <div className="bg-slate-900 text-white rounded-xl shadow-lg border border-slate-700 p-6 max-w-md mx-auto w-full relative overflow-hidden">
+    <div className="bg-white dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-800 rounded-sm shadow-sm p-6 max-w-md mx-auto w-full relative overflow-hidden">
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-blue-500"></div>
-      <h2 className="text-2xl font-bold mb-2">Ruleta de Estrategia</h2>
+      <h2 className="font-serif text-2xl font-medium text-slate-900 dark:text-zinc-100 mb-2">Ruleta de Estrategia</h2>
       <p className="text-slate-400 text-sm mb-6">Encontrá tu asignación ideal de activos argentinos en 1 clic.</p>
 
       <div className="flex gap-2 mb-6">
@@ -95,7 +95,7 @@ export default function PortfolioRoulette() {
               {result.assets}
             </div>
             <div className="flex justify-center gap-4 text-xs text-slate-300 mt-3 border-t border-slate-700 pt-3">
-              <span>{result.returnEst}</span>
+              <span className="font-mono tabular-nums">{result.returnEst}</span>
               <span className="text-slate-500">|</span>
               <span className="flex items-center gap-1">
                 Riesgo:
@@ -116,10 +116,12 @@ export default function PortfolioRoulette() {
         <Button
           onClick={spin}
           disabled={spinning}
-          className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white border-none"
+          className="flex-1 bg-slate-900 text-white dark:bg-white dark:text-slate-900 rounded-sm"
         >
-          {spinning ? 'Girando...' : 'Girar Estrategia'}
+          {spinning ? 'Girando...' : 'Ver Cartera Teórica'}
         </Button>
+
+      <p className="text-[10px] text-zinc-500 mt-2 text-center w-full block">*Asignación teórica de activos según perfil modelo. No constituye recomendación directa.</p>
         {result && (
           <Button onClick={share} variant="outline" className="border-slate-600 text-slate-900 bg-emerald-100 hover:bg-emerald-200">
             <Share2 className="h-4 w-4" />

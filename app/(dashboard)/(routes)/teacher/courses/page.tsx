@@ -1,4 +1,12 @@
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Mis Cursos",
+  description: "Administra y gestiona los cursos que impartes en la plataforma.",
+};
+
 export const dynamic = "force-dynamic";
+
 import React from 'react';
 import Link from 'next/link';
 
