@@ -48,13 +48,23 @@ export const calculateAccumulatedInflation = (
   const breakdown: MonthlyRate[] = [];
   let currentAmount = initialAmount;
 
-  const data = MOCK_INFLATION_DATA.filter((d) => {
-    const isAfterStart = d.year > startYear || (d.year === startYear && d.month >= startMonth);
-    const isBeforeEnd = d.year < endYear || (d.year === endYear && d.month <= endMonth);
-    return isAfterStart && isBeforeEnd;
-  });
+  if (startYear > endYear || (startYear === endYear && startMonth > endMonth)) {
+    return {
+      finalAmount: currentAmount,
+      accumulatedPercentage: 0,
+      monthlyBreakdown: breakdown,
+    };
+  }
 
-  for (const record of data) {
+  for (const record of MOCK_INFLATION_DATA) {
+    if (record.year > endYear || (record.year === endYear && record.month > endMonth)) {
+      break;
+    }
+
+    if (record.year < startYear || (record.year === startYear && record.month < startMonth)) {
+      continue;
+    }
+
     breakdown.push(record);
     currentAmount = currentAmount * (1 + record.rate / 100);
   }
