@@ -3,5 +3,6 @@ export const formatPrice = (price: number) => {
     style: 'currency',
     currency: 'ARS',
     minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
   }).format(price).replace('ARS', '$').replace(/\$\s?/, '$ ').trim();
 };
