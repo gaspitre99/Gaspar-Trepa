@@ -1,3 +1,14 @@
+import { Metadata } from "next";
+
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const article = articlesData.find((a) => a.slug === params.slug);
+  if (!article) return { title: "Artículo No Encontrado" };
+  return {
+    title: article.title,
+    description: article.summary,
+  };
+}
+
 import React from 'react';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';

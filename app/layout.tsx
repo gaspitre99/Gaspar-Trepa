@@ -24,11 +24,21 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Hablemos de Economía',
-  description: 'Plataforma educativa de Hablemos de Economía',
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'),
+  title: {
+    default: 'Hablemos de Economía',
+    template: '%s | Hablemos de Economía',
+  },
+  description: 'Plataforma educativa sobre educación financiera, historia económica argentina y herramientas de análisis e inversión.',
+
+  keywords: ["educación financiera", "economía argentina", "inflación", "inversiones", "billeteras virtuales", "dólar mep", "historia monetaria"],
   openGraph: {
     title: 'Hablemos de Economía',
-    description: 'Plataforma educativa de Hablemos de Economía',
+    description: 'Plataforma educativa sobre educación financiera, historia económica argentina y herramientas de análisis e inversión.',
+
+    locale: 'es_AR',
+    type: 'website',
+    images: [{ url: '/og-image.png', width: 1200, height: 630 }],
   },
 };
 
