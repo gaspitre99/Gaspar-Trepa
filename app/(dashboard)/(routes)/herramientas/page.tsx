@@ -26,16 +26,16 @@ export default function HerramientasPage() {
           </p>
         </Link>
 
-        {/* Herramienta 2 (Placeholder from previous context) */}
-        <div className='group relative block p-6 bg-white rounded-2xl shadow-sm border border-slate-200 hover:shadow-md transition-shadow opacity-60 cursor-not-allowed'>
-          <div className='flex items-center justify-center w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl mb-4'>
+        {/* Herramienta 2: Rendimiento Billeteras */}
+        <Link href='/herramientas/billeteras' className='group relative block p-6 bg-white rounded-2xl shadow-sm border border-slate-200 hover:shadow-md transition-shadow'>
+          <div className='flex items-center justify-center w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl mb-4 group-hover:scale-110 transition-transform'>
             <Calculator size={24} />
           </div>
-          <h2 className='text-lg font-bold text-slate-800 mb-2'>Calculadora Real vs Inflación</h2>
+          <h2 className='text-lg font-bold text-slate-800 mb-2'>Rendimiento Billeteras</h2>
           <p className='text-sm text-slate-500'>
-            Simulador de rendimiento real de inversiones frente a la inflación mensual. (En desarrollo)
+            Compará en tiempo real qué billetera te paga más según tu capital y sus topes.
           </p>
-        </div>
+        </Link>
 
       </div>
     </div>
