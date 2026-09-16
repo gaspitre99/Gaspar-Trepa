@@ -87,41 +87,41 @@ export default function MarketTicker() {
   if (!data.length) return null;
 
   return (
-    <div className="w-full bg-slate-900 text-white py-2 overflow-hidden border-b border-slate-700 text-sm relative">
+    <div className="w-full bg-slate-900 text-white py-2 overflow-hidden border-b border-slate-700 text-sm relative font-sans">
       <div className="flex items-center absolute left-0 h-full px-4 z-10 bg-slate-900 pr-4 border-r border-slate-700">
         <div className="relative flex h-2 w-2 mr-2">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
           <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
         </div>
-        <span className="font-semibold text-emerald-400 text-xs tracking-wider">EN VIVO</span>
+        <span className="font-bold uppercase tracking-widest text-[11px] text-emerald-400">EN VIVO</span>
       </div>
 
       <div className="flex whitespace-nowrap animate-ticker ml-28">
         {data.map((asset, idx) => (
           <div key={idx} className="inline-flex items-center px-6 gap-2 group">
-            <span className="font-bold text-slate-400">{asset.symbol}</span>
-            <span className="font-medium text-slate-100">{asset.priceFormatted}</span>
+            <span className="font-bold uppercase tracking-widest text-[11px] text-zinc-500">{asset.symbol}</span>
+            <span className="font-mono tabular-nums font-bold tracking-tight text-zinc-100">{asset.priceFormatted}</span>
             {asset.symbol !== 'RIESGO PAÍS' && asset.symbol !== 'S&P MERVAL' ? (
-              <span className="text-xs font-medium text-emerald-400 flex items-center bg-emerald-400/10 px-1 rounded">
+              <span className="font-mono tabular-nums text-[11px] font-bold text-emerald-400 flex items-center bg-emerald-400/10 px-1 rounded-sm">
                 <svg className="w-3 h-3 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" /></svg>
                 {Math.random().toFixed(1)}%
               </span>
             ) : null}
-            <span className="text-slate-600 mx-2 ml-4 group-last:hidden">|</span>
+            <span className="text-zinc-700 mx-2 ml-4 group-last:hidden">|</span>
           </div>
         ))}
         {/* Duplicate for seamless scrolling */}
         {data.map((asset, idx) => (
           <div key={`dup-${idx}`} className="inline-flex items-center px-6 gap-2 group">
-            <span className="font-bold text-slate-400">{asset.symbol}</span>
-            <span className="font-medium text-slate-100">{asset.priceFormatted}</span>
+            <span className="font-bold uppercase tracking-widest text-[11px] text-zinc-500">{asset.symbol}</span>
+            <span className="font-mono tabular-nums font-bold tracking-tight text-zinc-100">{asset.priceFormatted}</span>
             {asset.symbol !== 'RIESGO PAÍS' && asset.symbol !== 'S&P MERVAL' ? (
-              <span className="text-xs font-medium text-emerald-400 flex items-center bg-emerald-400/10 px-1 rounded">
+              <span className="font-mono tabular-nums text-[11px] font-bold text-emerald-400 flex items-center bg-emerald-400/10 px-1 rounded-sm">
                 <svg className="w-3 h-3 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" /></svg>
                 {Math.random().toFixed(1)}%
               </span>
             ) : null}
-            <span className="text-slate-600 mx-2 ml-4 group-last:hidden">|</span>
+            <span className="text-zinc-700 mx-2 ml-4 group-last:hidden">|</span>
           </div>
         ))}
       </div>

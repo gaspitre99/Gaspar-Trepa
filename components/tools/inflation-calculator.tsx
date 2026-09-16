@@ -39,39 +39,39 @@ export default function InflationCalculator() {
 
   return (
     <div className="max-w-4xl mx-auto space-y-8 pb-10">
-      <div className="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-slate-200">
-        <h2 className="text-2xl font-bold text-slate-800 mb-6">Calculadora de Inflación Acumulada</h2>
+      <div className="bg-white dark:bg-zinc-950 p-6 md:p-8 rounded-md shadow-sm border border-zinc-200 dark:border-zinc-800">
+        <h2 className="font-serif text-3xl font-medium tracking-tight text-slate-900 dark:text-zinc-100 mb-6">Calculadora de Inflación Acumulada</h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">Para comprar algo que salía</label>
+              <label className="block text-[11px] font-bold uppercase tracking-widest text-zinc-500 mb-2">Para comprar algo que salía</label>
               <div className="relative">
-                <span className="absolute left-3 top-2.5 text-slate-500">$</span>
+                <span className="absolute left-3 top-2.5 text-zinc-400 font-mono tabular-nums">$</span>
                 <input
                   type="number"
                   value={amount}
                   onChange={(e) => setAmount(Number(e.target.value))}
-                  className="pl-8 w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-400"
+                  className="pl-8 w-full rounded-md border border-zinc-200 dark:border-zinc-800 px-3 py-2 bg-zinc-50 dark:bg-zinc-900 font-mono tabular-nums text-slate-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-zinc-400"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">A principios de</label>
+                <label className="block text-[11px] font-bold uppercase tracking-widest text-zinc-500 mb-2">A principios de</label>
                 <div className="flex gap-2">
                   <select
                     value={startMonth}
                     onChange={(e) => setStartMonth(Number(e.target.value))}
-                    className="w-full rounded-md border border-slate-300 px-2 py-2 text-sm bg-white"
+                    className="w-full rounded-md border border-zinc-200 dark:border-zinc-800 px-2 py-2 text-sm bg-white dark:bg-zinc-900 text-slate-900 dark:text-zinc-100"
                   >
                     {MONTHS.map((m, i) => <option key={i} value={i + 1}>{m}</option>)}
                   </select>
                   <select
                     value={startYear}
                     onChange={(e) => setStartYear(Number(e.target.value))}
-                    className="w-full rounded-md border border-slate-300 px-2 py-2 text-sm bg-white"
+                    className="w-full rounded-md border border-zinc-200 dark:border-zinc-800 px-2 py-2 text-sm bg-white dark:bg-zinc-900 text-slate-900 dark:text-zinc-100 font-mono tabular-nums"
                   >
                     {YEARS.map(y => <option key={y} value={y}>{y}</option>)}
                   </select>
@@ -79,19 +79,19 @@ export default function InflationCalculator() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">A finales de</label>
+                <label className="block text-[11px] font-bold uppercase tracking-widest text-zinc-500 mb-2">A finales de</label>
                 <div className="flex gap-2">
                   <select
                     value={endMonth}
                     onChange={(e) => setEndMonth(Number(e.target.value))}
-                    className="w-full rounded-md border border-slate-300 px-2 py-2 text-sm bg-white"
+                    className="w-full rounded-md border border-zinc-200 dark:border-zinc-800 px-2 py-2 text-sm bg-white dark:bg-zinc-900 text-slate-900 dark:text-zinc-100"
                   >
                     {MONTHS.map((m, i) => <option key={i} value={i + 1}>{m}</option>)}
                   </select>
                   <select
                     value={endYear}
                     onChange={(e) => setEndYear(Number(e.target.value))}
-                    className="w-full rounded-md border border-slate-300 px-2 py-2 text-sm bg-white"
+                    className="w-full rounded-md border border-zinc-200 dark:border-zinc-800 px-2 py-2 text-sm bg-white dark:bg-zinc-900 text-slate-900 dark:text-zinc-100 font-mono tabular-nums"
                   >
                     {YEARS.map(y => <option key={y} value={y}>{y}</option>)}
                   </select>
@@ -101,37 +101,37 @@ export default function InflationCalculator() {
             {isInvalidDateRange && <p className="text-rose-500 text-sm">La fecha de inicio debe ser anterior a la fecha de fin.</p>}
           </div>
 
-          <div className="bg-slate-50 p-6 rounded-xl border border-slate-200 flex flex-col justify-center">
+          <div className="bg-zinc-50 dark:bg-zinc-900 p-6 rounded-md border border-zinc-200 dark:border-zinc-800 flex flex-col justify-center">
             {isInvalidDateRange ? (
-              <div className="text-center text-slate-500">Ajusta las fechas para ver el resultado</div>
+              <div className="text-center text-zinc-500">Ajusta las fechas para ver el resultado</div>
             ) : (
               <div className="space-y-4">
                 <div>
-                  <p className="text-sm text-slate-600 font-medium">Necesitarías la suma de</p>
-                  <p className="text-3xl md:text-4xl font-bold text-slate-900 mt-1">
+                  <p className="text-[11px] font-bold uppercase tracking-widest text-zinc-500">Necesitarías la suma de</p>
+                  <p className="text-3xl md:text-4xl font-mono tabular-nums font-bold tracking-tight text-slate-900 dark:text-zinc-100 mt-1">
                     {formatPrice(result.finalAmount)}
                   </p>
                 </div>
                 <div>
-                  <p className="text-sm text-slate-600 font-medium">La inflación acumulada fue de</p>
-                  <p className="text-xl font-bold text-blue-600 mt-1">
+                  <p className="text-[11px] font-bold uppercase tracking-widest text-zinc-500">La inflación acumulada fue de</p>
+                  <p className="text-xl font-mono tabular-nums font-bold text-emerald-600 dark:text-emerald-400 mt-1">
                     {result.accumulatedPercentage.toLocaleString('es-AR', { maximumFractionDigits: 2 })}%
                   </p>
                 </div>
-                <p className="text-xs text-slate-500 italic">
-                  entre {MONTHS[startMonth - 1]} de {startYear} y {MONTHS[endMonth - 1]} de {endYear}
+                <p className="text-xs text-zinc-500 italic">
+                  entre {MONTHS[startMonth - 1]} de <span className="font-mono tabular-nums">{startYear}</span> y {MONTHS[endMonth - 1]} de <span className="font-mono tabular-nums">{endYear}</span>
                 </p>
 
                 <div className="pt-4 flex flex-col sm:flex-row gap-3">
                   <button
                     onClick={handleCopy}
-                    className="flex-1 bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-slate-800 transition"
+                    className="flex-1 bg-slate-900 text-white dark:bg-white dark:text-slate-900 px-4 py-2 rounded-md text-sm font-semibold hover:opacity-90 transition"
                   >
                     Copiar cálculo
                   </button>
                   <button
                     onClick={() => setShowDetails(!showDetails)}
-                    className="flex-1 bg-white border border-slate-300 text-slate-700 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-slate-50 transition"
+                    className="flex-1 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-slate-700 dark:text-zinc-300 px-4 py-2 rounded-md text-sm font-semibold hover:bg-zinc-50 dark:hover:bg-zinc-800 transition"
                   >
                     {showDetails ? 'Ocultar detalle' : 'Ver detalle'}
                   </button>
@@ -142,21 +142,21 @@ export default function InflationCalculator() {
         </div>
 
         {showDetails && !isInvalidDateRange && (
-          <div className="mt-8 border-t border-slate-200 pt-6">
-            <h3 className="text-lg font-semibold text-slate-800 mb-4">Detalle Mes a Mes</h3>
-            <div className="max-h-64 overflow-y-auto border border-slate-200 rounded-md">
+          <div className="mt-8 border-t border-zinc-200 dark:border-zinc-800 pt-6">
+            <h3 className="font-serif text-lg font-medium text-slate-900 dark:text-zinc-100 mb-4">Detalle Mes a Mes</h3>
+            <div className="max-h-64 overflow-y-auto border border-zinc-200 dark:border-zinc-800 rounded-md">
               <table className="w-full text-sm text-left">
-                <thead className="text-xs text-slate-700 uppercase bg-slate-50 sticky top-0">
+                <thead className="text-[11px] font-bold uppercase tracking-widest text-zinc-500 bg-zinc-50 dark:bg-zinc-900 sticky top-0 border-b border-zinc-200 dark:border-zinc-800">
                   <tr>
                     <th className="px-4 py-3">Período</th>
                     <th className="px-4 py-3 text-right">Inflación Mensual</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
                   {result.monthlyBreakdown.map((item, idx) => (
-                    <tr key={idx} className="bg-white border-b border-slate-100 hover:bg-slate-50">
-                      <td className="px-4 py-2">{MONTHS[item.month - 1]} {item.year}</td>
-                      <td className="px-4 py-2 text-right font-medium">{item.rate.toFixed(1)}%</td>
+                    <tr key={idx} className="bg-white dark:bg-zinc-950 hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-colors">
+                      <td className="px-4 py-2 text-slate-900 dark:text-zinc-100">{MONTHS[item.month - 1]} <span className="font-mono tabular-nums">{item.year}</span></td>
+                      <td className="px-4 py-2 text-right font-mono tabular-nums text-slate-900 dark:text-zinc-100">{item.rate.toFixed(1)}%</td>
                     </tr>
                   ))}
                 </tbody>
@@ -166,8 +166,8 @@ export default function InflationCalculator() {
         )}
       </div>
 
-      <div className="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-slate-200">
-        <h3 className="text-xl font-bold text-slate-800 mb-6">Evolución de la inflación anual (Período 2002-Presente)</h3>
+      <div className="bg-white dark:bg-zinc-950 p-6 md:p-8 rounded-md shadow-sm border border-zinc-200 dark:border-zinc-800">
+        <h3 className="font-serif text-2xl font-medium tracking-tight text-slate-900 dark:text-zinc-100 mb-6">Evolución de la inflación anual (Período 2002-Presente)</h3>
         <div className="h-80 w-full">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={annualSeries} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>

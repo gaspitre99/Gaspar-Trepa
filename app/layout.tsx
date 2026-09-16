@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Newsreader, Inter, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 
 import { ClerkProvider } from '@clerk/nextjs';
@@ -7,7 +7,21 @@ import { esES } from '@clerk/localizations';
 
 import ToastProvider from '@/components/providers/toaster-provider';
 
-const inter = Inter({ subsets: ['latin'] });
+const serif = Newsreader({
+  subsets: ['latin'],
+  variable: '--font-serif',
+  style: ['normal', 'italic']
+});
+
+const sans = Inter({
+  subsets: ['latin'],
+  variable: '--font-sans'
+});
+
+const mono = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-mono'
+});
 
 export const metadata: Metadata = {
   title: 'Hablemos de Economía',
@@ -23,8 +37,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
   return (
     <ClerkProvider localization={esES as any} publishableKey={publishableKey}>
-      <html lang='es'>
-        <body className={inter.className}>
+      <html lang='es' className={`${sans.variable} ${serif.variable} ${mono.variable}`}>
+        <body className="font-sans antialiased text-slate-900 bg-white dark:bg-zinc-950 dark:text-zinc-50">
           <ToastProvider/>
           {children}
         </body>
