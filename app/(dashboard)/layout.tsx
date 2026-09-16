@@ -2,10 +2,11 @@ import React from 'react';
 import Sidebar from './_components/sidebar';
 import Navbar from './_components/navbar';
 import MarketTicker from '@/components/market-ticker';
+import DisclaimerMarquee from '@/components/disclaimer-marquee';
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div>
+    <div className='h-screen flex flex-col'>
       <div className="fixed top-0 w-full z-[60]">
         <MarketTicker />
       </div>
@@ -15,7 +16,12 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
       <div className='hidden md:flex h-full w-56 flex-col fixed inset-y-0 top-[36px] z-50'>
         <Sidebar />
       </div>
-      <main className='md:pl-56 pt-[116px] h-full flex flex-col'>{children}</main>
+      <main className='md:pl-56 pt-[116px] flex-1 flex flex-col'>
+        <div className="flex-1">{children}</div>
+        <div className="mt-auto">
+          <DisclaimerMarquee />
+        </div>
+      </main>
     </div>
   );
 };
