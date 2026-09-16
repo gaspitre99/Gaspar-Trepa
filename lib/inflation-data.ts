@@ -76,18 +76,20 @@ export type AnnualSeries = {
 };
 
 export const getAnnualInflationSeries = (): AnnualSeries[] => {
-  const series: AnnualSeries[] = [];
-  const years = Array.from(new Set(MOCK_INFLATION_DATA.map((d) => d.year)));
+  if (MOCK_INFLATION_DATA.length === 0) return [];
 
-  for (const year of years) {
-    const yearData = MOCK_INFLATION_DATA.filter((d) => d.year === year);
-    let currentAmount = 100;
-    for (const record of yearData) {
-      currentAmount = currentAmount * (1 + record.rate / 100);
-    }
-    const annualRate = ((currentAmount - 100) / 100) * 100;
-    series.push({ year, rate: annualRate });
+  const seriesMap = new Map<number, number>();
+
+  for (const record of MOCK_INFLATION_DATA) {
+    const currentAmount = seriesMap.get(record.year) ?? 100;
+    seriesMap.set(record.year, currentAmount * (1 + record.rate / 100));
   }
 
-  return series;
+  const series: AnnualSeries[] = [];
+  seriesMap.forEach((amount, year) => {
+    const annualRate = ((amount - 100) / 100) * 100;
+    series.push({ year, rate: annualRate });
+  });
+
+  return series.sort((a, b) => a.year - b.year);
 };
