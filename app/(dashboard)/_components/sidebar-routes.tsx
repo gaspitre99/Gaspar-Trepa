@@ -12,11 +12,6 @@ const routes = [
     href: '/',
   },
   {
-    icon: Compass,
-    label: 'Explorar',
-    href: '/search',
-  },
-  {
     icon: Newspaper,
     label: 'Artículos',
     href: '/articulos',
