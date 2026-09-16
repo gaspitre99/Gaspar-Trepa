@@ -33,6 +33,9 @@ const PORTFOLIOS: Record<Profile, Portfolio[]> = {
   ],
 };
 
+const PROFILES: Profile[] = ['Conservador', 'Moderado', 'Agresivo'];
+const RISK_LEVELS = [1, 2, 3, 4, 5] as const;
+
 export default function PortfolioRoulette() {
   const [profile, setProfile] = useState<Profile>('Moderado');
   const [spinning, setSpinning] = useState(false);
@@ -65,7 +68,7 @@ export default function PortfolioRoulette() {
       <p className="text-slate-400 text-sm mb-6">Encontrá tu asignación ideal de activos argentinos en 1 clic.</p>
 
       <div className="flex gap-2 mb-6">
-        {(['Conservador', 'Moderado', 'Agresivo'] as Profile[]).map((p) => (
+        {PROFILES.map((p) => (
           <button
             key={p}
             onClick={() => setProfile(p)}
@@ -100,7 +103,7 @@ export default function PortfolioRoulette() {
               <span className="flex items-center gap-1">
                 Riesgo:
                 <span className="flex gap-0.5">
-                  {[1,2,3,4,5].map(i => (
+                  {RISK_LEVELS.map(i => (
                     <span key={i} className={`h-2 w-2 rounded-full ${i <= result.risk ? (result.risk > 3 ? 'bg-red-500' : 'bg-amber-500') : 'bg-slate-700'}`}></span>
                   ))}
                 </span>
