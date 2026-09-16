@@ -2,30 +2,22 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Calculator, Dices, Coins, History, TrendingUp } from 'lucide-react';
+import { Calculator, Coins, History, Wallet } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 
 const tools = [
   {
-    title: 'Calculadora Real vs Inflación',
-    description: 'Ajusta montos históricos por inflación para ver su valor real.',
-    href: '/herramientas/calculadora-real',
-    icon: TrendingUp,
-    color: 'text-emerald-400',
-    bgColor: 'bg-emerald-500/10'
-  },
-  {
-    title: 'Ruleta de Estrategia',
-    description: 'Arma un portafolio simulado basado en el riesgo que decidas.',
-    href: '/herramientas/ruleta',
-    icon: Dices,
+    title: 'Ranking de Billeteras Virtuales',
+    description: 'Compara rendimientos diarios, TNA y simulador de inversión para las principales billeteras.',
+    href: '/herramientas/billeteras',
+    icon: Wallet,
     color: 'text-blue-400',
     bgColor: 'bg-blue-500/10'
   },
   {
     title: 'Breakeven MEP vs Tasa',
-    description: 'Compara si te conviene hacer tasa en pesos o comprar dólar MEP.',
+    description: 'Compara si te conviene hacer tasa fija en pesos o comprar dólar MEP.',
     href: '/herramientas/breakeven',
     icon: Coins,
     color: 'text-amber-400',
@@ -33,7 +25,7 @@ const tools = [
   },
   {
     title: 'Historia Monetaria & Zeros',
-    description: 'Evolución de los signos monetarios en Argentina y convertidor de valores históricos a pesos actuales.',
+    description: 'Evolución de los signos monetarios en Argentina y convertidor histórico a pesos actuales.',
     href: '/herramientas/historia-monetaria',
     icon: History,
     color: 'text-rose-400',
@@ -41,7 +33,7 @@ const tools = [
   },
   {
     title: 'Inflación Acumulada (IPC)',
-    description: 'Calcula la inflación acumulada entre dos períodos específicos.',
+    description: 'Calcula la inflación acumulada entre dos períodos específicos históricamente.',
     href: '/herramientas/inflacion',
     icon: Calculator,
     color: 'text-purple-400',

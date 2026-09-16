@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { Compass, Layout, Calculator, BookOpen, Gamepad2 } from 'lucide-react';
+import { TrendingUp, Layout, Calculator, BookOpen, Gamepad2 } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 
 import SidebarItem from './sidebar-item';
@@ -8,13 +8,13 @@ import SidebarItem from './sidebar-item';
 const routes = [
   {
     icon: Layout,
-    label: 'Panel',
+    label: 'Inicio',
     href: '/',
   },
   {
-    icon: BookOpen,
-    label: 'Artículos',
-    href: '/articulos',
+    icon: TrendingUp,
+    label: 'Cotizaciones',
+    href: '/cotizaciones',
   },
   {
     icon: Calculator,
@@ -22,14 +22,14 @@ const routes = [
     href: '/herramientas',
   },
   {
+    icon: BookOpen,
+    label: 'Artículos',
+    href: '/articulos',
+  },
+  {
     icon: Gamepad2,
     label: 'Preciodle',
     href: '/juegos/preciodle',
-  },
-  {
-    icon: Compass,
-    label: 'Explorar / Cursos',
-    href: '/search',
   }
 ];
 
