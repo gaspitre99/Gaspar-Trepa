@@ -127,6 +127,10 @@ export default function PortfolioRoulette() {
         )}
       </div>
 
+      <p className="text-[10px] text-zinc-500 text-center mt-2">
+        Asignación teórica de activos según perfil modelo. No constituye recomendación directa de cartera.
+      </p>
+
       {result && (
         <div className="mt-4 pt-4 border-t border-slate-700 text-center animate-in fade-in duration-700">
            <p className="text-xs text-slate-400 mb-2">¿Querés aprender a armar esta cartera paso a paso?</p>
