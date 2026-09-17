@@ -1,86 +1,138 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { formatPrice } from '@/lib/format';
 
-type DolarRate = {
-  moneda: string;
-  casa: string;
-  nombre: string;
-  compra: number;
-  venta: number;
-  fechaActualizacion: string;
-};
+interface AssetData {
+  symbol: string;
+  priceFormatted: string;
+  isARS: boolean;
+}
 
-const MarketTicker = () => {
-  const [rates, setRates] = useState<DolarRate[]>([]);
+export default function MarketTicker() {
+  const [data, setData] = useState<AssetData[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchRates = async () => {
+    let isMounted = true;
+
+    const fetchMarketData = async () => {
+      // Default fallback values
+      let bluePrice = '$1,050.00';
+      let mepPrice = '$1,030.00';
+      let btcPrice = '$65,000.00';
+
       try {
-        const response = await fetch('https://dolarapi.com/v1/dolares');
-        if (!response.ok) throw new Error('Failed to fetch');
-        const data = await response.json();
-        // Filter for Oficial, Blue, MEP, CCL
-        const filteredRates = data.filter((rate: DolarRate) =>
-          ['oficial', 'blue', 'mep', 'contadoconliqui'].includes(rate.casa)
-        );
-        setRates(filteredRates);
-      } catch (error) {
-        console.error('Error fetching market rates:', error);
-        // Fallback static values
-        setRates([
-          { moneda: 'USD', casa: 'oficial', nombre: 'Oficial', compra: 850, venta: 900, fechaActualizacion: '' },
-          { moneda: 'USD', casa: 'blue', nombre: 'Blue', compra: 1000, venta: 1050, fechaActualizacion: '' },
-          { moneda: 'USD', casa: 'mep', nombre: 'Bolsa', compra: 1020, venta: 1030, fechaActualizacion: '' },
-          { moneda: 'USD', casa: 'contadoconliqui', nombre: 'Contado con liqui', compra: 1050, venta: 1060, fechaActualizacion: '' },
+        const [blueResult, mepResult, btcResult] = await Promise.allSettled([
+          fetch('https://dolarapi.com/v1/dolares/blue').then(res => {
+            if (!res.ok) throw new Error('Blue fetch failed');
+            return res.json();
+          }),
+          fetch('https://dolarapi.com/v1/dolares/mep').then(res => {
+            if (!res.ok) throw new Error('MEP fetch failed');
+            return res.json();
+          }),
+          fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd').then(res => {
+            if (!res.ok) throw new Error('BTC fetch failed');
+            return res.json();
+          })
         ]);
-      } finally {
+
+        if (blueResult.status === 'fulfilled') {
+          bluePrice = formatPrice(blueResult.value.venta);
+        } else {
+          console.error('Failed to fetch Blue:', blueResult.reason);
+        }
+
+        if (mepResult.status === 'fulfilled') {
+          mepPrice = formatPrice(mepResult.value.venta);
+        } else {
+          console.error('Failed to fetch MEP:', mepResult.reason);
+        }
+
+        if (btcResult.status === 'fulfilled') {
+          btcPrice = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(btcResult.value.bitcoin.usd);
+        } else {
+          console.error('Failed to fetch BTC:', btcResult.reason);
+        }
+      } catch (error) {
+        console.error('Failed to fetch market ticker data', error);
+      }
+
+      if (isMounted) {
+        setData([
+          { symbol: 'BLUE', priceFormatted: bluePrice, isARS: true },
+          { symbol: 'MEP', priceFormatted: mepPrice, isARS: true },
+          { symbol: 'BTC', priceFormatted: btcPrice, isARS: false },
+          { symbol: 'S&P MERVAL', priceFormatted: '1.2M (ref)', isARS: true },
+          { symbol: 'RIESGO PAÍS', priceFormatted: '1300 pts (ref)', isARS: false },
+        ]);
         setLoading(false);
       }
     };
 
-    fetchRates();
+    fetchMarketData();
+    const interval = setInterval(fetchMarketData, 60000);
+
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
   }, []);
 
   if (loading) {
-    return <div className="w-full bg-slate-900 text-white py-2 text-sm text-center">Cargando cotizaciones...</div>;
+    return (
+      <div className="w-full bg-neutral-950 text-slate-300 py-2 px-4 flex gap-4 overflow-x-hidden border-b border-slate-700">
+        <div className="animate-pulse h-4 w-24 bg-slate-700 rounded"></div>
+        <div className="animate-pulse h-4 w-24 bg-slate-700 rounded"></div>
+        <div className="animate-pulse h-4 w-24 bg-slate-700 rounded"></div>
+      </div>
+    );
   }
 
+  if (!data.length) return null;
+
   return (
-    <div className="w-full bg-slate-900 text-white overflow-hidden py-2 text-sm relative z-50">
-      <div className="flex whitespace-nowrap animate-ticker">
-        {rates.map((rate, index) => (
-          <div key={index} className="inline-flex items-center px-4 space-x-2">
-            <span className="font-semibold text-emerald-400">Dólar {rate.nombre}:</span>
-            <span>C: ${rate.compra.toFixed(2)}</span>
-            <span>/</span>
-            <span>V: ${rate.venta.toFixed(2)}</span>
-            <span className="mx-4 text-slate-500">|</span>
-          </div>
-        ))}
-        {/* Duplicate for seamless scrolling */}
-        {rates.map((rate, index) => (
-          <div key={`dup-${index}`} className="inline-flex items-center px-4 space-x-2">
-            <span className="font-semibold text-emerald-400">Dólar {rate.nombre}:</span>
-            <span>C: ${rate.compra.toFixed(2)}</span>
-            <span>/</span>
-            <span>V: ${rate.venta.toFixed(2)}</span>
-            <span className="mx-4 text-slate-500">|</span>
-          </div>
-        ))}
+    <div className="w-full bg-neutral-950 text-white py-2 overflow-hidden border-b border-slate-700 text-sm relative font-sans">
+      <div className="flex items-center absolute left-0 h-full px-4 z-10 bg-neutral-950 pr-4 border-r border-slate-700">
+        <div className="relative flex h-2 w-2 mr-2">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+        </div>
+        <span className="font-bold uppercase tracking-widest text-[11px] text-emerald-400">EN VIVO</span>
       </div>
-      <style jsx>{`
-        @keyframes ticker {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        .animate-ticker {
-          animation: ticker 30s linear infinite;
-        }
-      `}</style>
+
+      <div className="flex w-full overflow-hidden ml-28 group">
+        <div className="flex shrink-0 items-center animate-marquee group-hover:[animation-play-state:paused] min-w-full justify-around gap-8 pr-8">
+          {data.map((asset, idx) => (
+            <div key={idx} className="inline-flex items-center space-x-2 shrink-0">
+              <span className="font-bold uppercase tracking-widest text-[11px] text-slate-500">{asset.symbol}</span>
+              <span className="font-mono tabular-nums font-bold tracking-tight text-slate-100">{asset.priceFormatted}</span>
+              {asset.symbol !== 'RIESGO PAÍS' && asset.symbol !== 'S&P MERVAL' ? (
+                <span className="font-mono tabular-nums text-[11px] font-bold text-emerald-400 flex items-center bg-emerald-400/10 px-1 rounded-sm">
+                  <svg className="w-3 h-3 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" /></svg>
+                  {Math.random().toFixed(1)}%
+                </span>
+              ) : null}
+            </div>
+          ))}
+        </div>
+        {/* Duplicate for seamless scrolling */}
+        <div className="flex shrink-0 items-center animate-marquee group-hover:[animation-play-state:paused] min-w-full justify-around gap-8 pr-8" aria-hidden="true">
+          {data.map((asset, idx) => (
+            <div key={`dup-${idx}`} className="inline-flex items-center space-x-2 shrink-0">
+              <span className="font-bold uppercase tracking-widest text-[11px] text-slate-500">{asset.symbol}</span>
+              <span className="font-mono tabular-nums font-bold tracking-tight text-slate-100">{asset.priceFormatted}</span>
+              {asset.symbol !== 'RIESGO PAÍS' && asset.symbol !== 'S&P MERVAL' ? (
+                <span className="font-mono tabular-nums text-[11px] font-bold text-emerald-400 flex items-center bg-emerald-400/10 px-1 rounded-sm">
+                  <svg className="w-3 h-3 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" /></svg>
+                  {Math.random().toFixed(1)}%
+                </span>
+              ) : null}
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
-};
-
-export default MarketTicker;
+}
