@@ -1,4 +1,12 @@
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Panel Principal",
+  description: "Tu panel de control de Hablemos de Economía. Accede a herramientas, calculadoras y análisis de mercado.",
+};
+
 export const dynamic = "force-dynamic";
+
 import { UserButton } from "@clerk/nextjs";
 import CalculadoraInflacion from "@/components/calculadora-inflacion";
 import PortfolioRoulette from "@/components/portfolio-roulette";

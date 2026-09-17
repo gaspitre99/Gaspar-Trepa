@@ -4,7 +4,7 @@ const database = new PrismaClient();
 
 async function main() {
   try {
-    const defaultUserId = 'admin_seed_user'; // Replace with a generic user id for seeded courses
+    const defaultUserId = process.env.SEED_USER_ID || 'system_seed_user';
 
     await database.category.createMany({
       data: [

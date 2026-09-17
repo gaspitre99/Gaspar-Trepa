@@ -20,7 +20,7 @@ export async function POST(req: Request) {
     });
     return NextResponse.json(course, { status: 201 });
   } catch (error) {
-    console.log('[COURSES]', error);
+    console.log('[COURSES]', error instanceof Error ? error.message : String(error));
     return new NextResponse('Internal Server Error', { status: 500 });
   }
 }

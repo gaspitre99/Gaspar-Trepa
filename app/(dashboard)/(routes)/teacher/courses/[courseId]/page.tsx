@@ -1,4 +1,12 @@
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Editor de Curso",
+  description: "Edita el contenido y configuración de tu curso.",
+};
+
 export const dynamic = "force-dynamic";
+
 import React from 'react';
 import { auth } from '@clerk/nextjs';
 import { LayoutDashboard } from 'lucide-react';
@@ -7,8 +15,8 @@ import { redirect } from 'next/navigation';
 import { db } from '@/lib/db';
 import { IconBadge } from '@/components/icon-badge';
 
-import TitleForms from './_components/title-forms';
-import DescriptionForms from './_components/desctiption-forms';
+import TitleForm from './_components/title-form';
+import DescriptionForm from './_components/description-form';
 import PriceForm from './_components/price-form';
 import ExternalCheckoutForm from './_components/external-checkout-form';
 
@@ -46,8 +54,8 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
             <IconBadge icon={LayoutDashboard} />
             <h2 className='text-xl'>Personaliza tu curso</h2>
           </div>
-          <TitleForms initialData={course} courseId={course.id} />
-          <DescriptionForms initialData={course} courseId={course.id} />
+          <TitleForm initialData={course} courseId={course.id} />
+          <DescriptionForm initialData={course} courseId={course.id} />
         </div>
         <div>
           <PriceForm initialData={course} courseId={course.id} />
