@@ -105,29 +105,29 @@ export default function MarketTicker() {
       <div className="flex whitespace-nowrap animate-ticker ml-28">
         {data.map((asset, idx) => (
           <div key={idx} className="inline-flex items-center px-6 gap-2 group">
-            <span className="font-bold uppercase tracking-widest text-[11px] text-zinc-500">{asset.symbol}</span>
-            <span className="font-mono tabular-nums font-bold tracking-tight text-zinc-100">{asset.priceFormatted}</span>
+            <span className="font-bold uppercase tracking-widest text-[11px] text-slate-500">{asset.symbol}</span>
+            <span className="font-mono tabular-nums font-bold tracking-tight text-slate-100">{asset.priceFormatted}</span>
             {asset.symbol !== 'RIESGO PAÍS' && asset.symbol !== 'S&P MERVAL' ? (
               <span className="font-mono tabular-nums text-[11px] font-bold text-emerald-400 flex items-center bg-emerald-400/10 px-1 rounded-sm">
                 <svg className="w-3 h-3 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" /></svg>
                 {Math.random().toFixed(1)}%
               </span>
             ) : null}
-            <span className="text-zinc-700 mx-2 ml-4 group-last:hidden">|</span>
+            <span className="text-slate-700 mx-2 ml-4 group-last:hidden">|</span>
           </div>
         ))}
         {/* Duplicate for seamless scrolling */}
         {data.map((asset, idx) => (
           <div key={`dup-${idx}`} className="inline-flex items-center px-6 gap-2 group">
-            <span className="font-bold uppercase tracking-widest text-[11px] text-zinc-500">{asset.symbol}</span>
-            <span className="font-mono tabular-nums font-bold tracking-tight text-zinc-100">{asset.priceFormatted}</span>
+            <span className="font-bold uppercase tracking-widest text-[11px] text-slate-500">{asset.symbol}</span>
+            <span className="font-mono tabular-nums font-bold tracking-tight text-slate-100">{asset.priceFormatted}</span>
             {asset.symbol !== 'RIESGO PAÍS' && asset.symbol !== 'S&P MERVAL' ? (
               <span className="font-mono tabular-nums text-[11px] font-bold text-emerald-400 flex items-center bg-emerald-400/10 px-1 rounded-sm">
                 <svg className="w-3 h-3 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" /></svg>
                 {Math.random().toFixed(1)}%
               </span>
             ) : null}
-            <span className="text-zinc-700 mx-2 ml-4 group-last:hidden">|</span>
+            <span className="text-slate-700 mx-2 ml-4 group-last:hidden">|</span>
           </div>
         ))}
       </div>

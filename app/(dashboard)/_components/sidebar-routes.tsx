@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { Compass, Layout, Wrench, BookOpen, Newspaper, Landmark } from 'lucide-react';
+import { Layout, Wrench, BookOpen, Newspaper, Landmark } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 
 import SidebarItem from './sidebar-item';

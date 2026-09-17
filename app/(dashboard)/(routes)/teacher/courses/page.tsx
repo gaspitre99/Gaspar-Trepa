@@ -73,18 +73,18 @@ const CoursesPage = async () => {
             key={course.id}
             as="article"
             style={{ animationDelay: `${Math.min(i, 8) * 40}ms` }}
-            className="group relative hover:border-zinc-900 dark:hover:border-zinc-100 transition-colors duration-200 animate-enter flex flex-col gap-4 justify-between"
+            className="group relative hover:border-slate-900 dark:hover:border-slate-100 transition-colors duration-200 animate-enter flex flex-col gap-4 justify-between"
           >
             <div className="flex flex-col gap-1">
-              <h3 className="font-serif text-lg text-zinc-900 dark:text-zinc-100 line-clamp-2">{course.title}</h3>
+              <h3 className="font-serif text-lg text-slate-900 dark:text-slate-100 line-clamp-2">{course.title}</h3>
               {course.isPublished ? (
                 <span className="text-xs font-mono tabular-nums text-emerald-600">Publicado</span>
               ) : (
-                <span className="text-xs font-mono tabular-nums text-zinc-500">Borrador</span>
+                <span className="text-xs font-mono tabular-nums text-slate-500">Borrador</span>
               )}
             </div>
 
-            <Link href={`/teacher/courses/${course.id}`} className="inline-flex items-center gap-1.5 text-sm font-sans font-medium text-zinc-900 dark:text-zinc-100">
+            <Link href={`/teacher/courses/${course.id}`} className="inline-flex items-center gap-1.5 text-sm font-sans font-medium text-slate-900 dark:text-slate-100">
               Editar curso
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform duration-200 group-hover:translate-x-0.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </Link>
