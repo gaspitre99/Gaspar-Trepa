@@ -17,7 +17,7 @@ export async function PATCH(req: Request, { params }: { params: { courseId: stri
     const course = await db.course.update({ where: { id: courseId, userId }, data: { ...values } });
     return NextResponse.json(course);
   } catch (error) {
-    console.log('[COURSE_ID]', error instanceof Error ? error.message : String(error));
+    console.error('[COURSE_ID]', error instanceof Error ? error.message : 'Unknown error');
     return new NextResponse('Internal Error', { status: 500 });
   }
 }
