@@ -8,6 +8,8 @@ export interface Article {
   author: string;
   summary: string;
   content: string; // Markdown-like string or just paragraphs of HTML
+  imageUrl?: string;
+  imageCaption?: string;
 }
 
 export const articlesData: Article[] = [
