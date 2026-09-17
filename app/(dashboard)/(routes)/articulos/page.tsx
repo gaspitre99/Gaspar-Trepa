@@ -80,7 +80,7 @@ export default function ArticulosPage() {
                   <span className="text-sm text-slate-500">•</span>
                   <span className="text-sm text-slate-500">{article.date}</span>
                 </div>
-                <h2 className="text-2xl font-bold mb-2 group-hover:text-emerald-400 transition-colors">{article.title}</h2>
+                <h2 className="text-2xl font-bold mb-2 group-hover:text-blue-400 transition-colors">{article.title}</h2>
                 <p className="text-lg text-slate-400 mb-4 font-serif">{article.subtitle}</p>
                 <p className="text-sm mb-4 line-clamp-2 text-slate-300">{article.summary}</p>
                 <div className="flex items-center justify-between text-sm text-slate-500">

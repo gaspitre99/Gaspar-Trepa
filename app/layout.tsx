@@ -10,17 +10,21 @@ import ToastProvider from '@/components/providers/toaster-provider';
 const serif = Newsreader({
   subsets: ['latin'],
   variable: '--font-serif',
-  style: ['normal', 'italic']
+  style: ['normal', 'italic'],
+  display: 'swap',
+  adjustFontFallback: false,
 });
 
 const sans = Inter({
   subsets: ['latin'],
-  variable: '--font-sans'
+  variable: '--font-sans',
+  display: 'swap',
 });
 
 const mono = JetBrains_Mono({
   subsets: ['latin'],
-  variable: '--font-mono'
+  variable: '--font-mono',
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
@@ -48,7 +52,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <ClerkProvider localization={esES as any} publishableKey={publishableKey}>
       <html lang='es' className={`${sans.variable} ${serif.variable} ${mono.variable}`}>
-        <body className="font-sans antialiased text-slate-900 bg-white dark:bg-zinc-950 dark:text-zinc-50">
+        <body className="font-sans antialiased text-slate-900 bg-white dark:bg-slate-950 dark:text-slate-50">
           <ToastProvider/>
           {children}
         </body>

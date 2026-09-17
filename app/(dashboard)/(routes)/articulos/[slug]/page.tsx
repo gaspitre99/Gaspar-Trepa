@@ -34,7 +34,7 @@ export default function ArticlePage({ params }: { params: { slug: string } }) {
     <div className="bg-slate-950 min-h-screen text-slate-100">
       <div className="max-w-3xl mx-auto px-6 py-12">
         <div className="mb-8">
-          <Button variant="ghost" asChild className="mb-6 -ml-4 text-slate-400 hover:text-emerald-400 hover:bg-slate-900">
+          <Button variant="ghost" asChild className="mb-6 -ml-4 text-slate-400 hover:text-blue-400 hover:bg-slate-900">
             <Link href="/articulos">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Volver a Artículos
