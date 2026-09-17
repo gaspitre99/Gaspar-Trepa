@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { Layout, Wrench, BookOpen, Newspaper, Landmark } from 'lucide-react';
+import { Layout, Wrench, BookOpen, Newspaper, Landmark, Gamepad2, HelpCircle } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 
 import SidebarItem from './sidebar-item';
@@ -25,6 +25,16 @@ const routes = [
     icon: Landmark,
     label: 'Historia Monetaria',
     href: '/herramientas/historia-monetaria',
+  },
+  {
+    icon: Gamepad2,
+    label: 'Preciodle',
+    href: '/juegos/preciodle',
+  },
+  {
+    icon: HelpCircle,
+    label: 'Real o Chamuyo',
+    href: '/juegos/real-o-chamuyo',
   },
   {
     icon: BookOpen,
