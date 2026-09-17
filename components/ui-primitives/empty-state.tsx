@@ -18,9 +18,9 @@ export function EmptyState({ title, description, action, className, eyebrowText 
         )}>
             <div className="flex flex-col gap-1">
                 <span className={eyebrow}>{eyebrowText}</span>
-                <h3 className="font-serif text-lg text-zinc-900 dark:text-zinc-100">{title}</h3>
+                <h3 className="font-serif text-lg text-slate-900 dark:text-slate-100">{title}</h3>
                 {description && (
-                    <p className="text-sm text-zinc-500 font-sans">{description}</p>
+                    <p className="text-sm text-slate-500 font-sans">{description}</p>
                 )}
             </div>
             {action && <div>{action}</div>}
