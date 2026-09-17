@@ -43,12 +43,12 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || "pk_test_dummy_key_for_build_prerender_1234567890abcdef";
+  const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || "pk_test_Y2xlcmsuZXhhbXBsZS5jb20k";
 
   return (
     <ClerkProvider localization={esES as any} publishableKey={publishableKey}>
-      <html lang='es' className={`${sans.variable} ${serif.variable} ${mono.variable}`}>
-        <body className="font-sans antialiased text-slate-900 bg-white dark:bg-zinc-950 dark:text-zinc-50">
+      <html lang='es' className={`dark ${sans.variable} ${serif.variable} ${mono.variable}`}>
+        <body className="font-sans antialiased text-slate-200 bg-slate-950">
           <ToastProvider/>
           {children}
         </body>

@@ -82,10 +82,10 @@ export default function MarketTicker() {
 
   if (loading) {
     return (
-      <div className="w-full bg-slate-900 text-slate-300 py-2 px-4 flex gap-4 overflow-x-hidden border-b border-slate-700">
-        <div className="animate-pulse h-4 w-24 bg-slate-700 rounded"></div>
-        <div className="animate-pulse h-4 w-24 bg-slate-700 rounded"></div>
-        <div className="animate-pulse h-4 w-24 bg-slate-700 rounded"></div>
+      <div className="w-full bg-[#0A101D] text-slate-300 py-2 px-4 flex gap-4 overflow-x-hidden border-b border-slate-800">
+        <div className="animate-pulse h-4 w-24 bg-slate-800 rounded"></div>
+        <div className="animate-pulse h-4 w-24 bg-slate-800 rounded"></div>
+        <div className="animate-pulse h-4 w-24 bg-slate-800 rounded"></div>
       </div>
     );
   }
@@ -93,8 +93,8 @@ export default function MarketTicker() {
   if (!data.length) return null;
 
   return (
-    <div className="w-full bg-slate-900 text-white py-2 overflow-hidden border-b border-slate-700 text-sm relative font-sans">
-      <div className="flex items-center absolute left-0 h-full px-4 z-10 bg-slate-900 pr-4 border-r border-slate-700">
+    <div className="w-full bg-[#0A101D] text-white py-2 overflow-hidden border-b border-slate-800 text-sm relative font-sans">
+      <div className="flex items-center absolute left-0 h-full px-4 z-10 bg-[#0A101D] pr-4 border-r border-slate-800">
         <div className="relative flex h-2 w-2 mr-2">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
           <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>

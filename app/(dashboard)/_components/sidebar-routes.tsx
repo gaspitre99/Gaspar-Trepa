@@ -8,7 +8,7 @@ import SidebarItem from './sidebar-item';
 const routes = [
   {
     icon: Layout,
-    label: 'Panel',
+    label: 'Inicio',
     href: '/',
   },
   {
