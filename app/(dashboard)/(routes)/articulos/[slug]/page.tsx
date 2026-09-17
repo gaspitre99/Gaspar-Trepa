@@ -1,11 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Calendar, Clock, User } from "lucide-react";
+import { ArrowLeft, Clock, Calendar, User } from "lucide-react";
 
 interface Article {
   title: string;
   slug: string;
+  category?: string;
+  subtitle?: string;
   author?: string;
   publishedAt?: string;
   readTime?: string;
@@ -14,57 +16,71 @@ interface Article {
   content: string;
 }
 
-// Helper: Parser de contenido plano a elementos estructurados
+// Parser editorial con jerarquía de imprenta
 function ArticleBody({ content }: { content: string }) {
-  const blocks = content.split(/\n\s*\n/);
+  // Normalizar saltos de línea para evitar textos pegados
+  const cleanContent = content.replace(/\r\n/g, "\n");
+  const blocks = cleanContent.split(/\n\s*\n/);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-7 font-serif text-neutral-300">
       {blocks.map((block, idx) => {
         const trimmed = block.trim();
         if (!trimmed) return null;
 
-        // Detección de H2 (prefijo markdown '##' o títulos cortos en mayúsculas/destacados)
+        // Subtítulo H2
         if (trimmed.startsWith("## ")) {
           return (
             <h2
               key={idx}
-              className="text-2xl font-bold tracking-tight text-slate-100 mt-10 mb-4 border-b border-slate-800 pb-2"
+              className="text-2xl sm:text-3xl font-serif font-bold tracking-tight text-neutral-100 pt-6 pb-2 border-b border-neutral-800"
             >
               {trimmed.replace(/^##\s+/, "")}
             </h2>
           );
         }
 
-        // Detección de H3 ('### ')
+        // Subtítulo H3
         if (trimmed.startsWith("### ")) {
           return (
             <h3
               key={idx}
-              className="text-xl font-semibold text-slate-200 mt-8 mb-3"
+              className="text-xl sm:text-2xl font-serif font-semibold text-neutral-200 pt-4"
             >
               {trimmed.replace(/^###\s+/, "")}
             </h3>
           );
         }
 
-        // Citas editoriales ('> ')
+        // Cita editorial destacada (Pull quote estilo Economist)
         if (trimmed.startsWith("> ")) {
           return (
             <blockquote
               key={idx}
-              className="border-l-4 border-amber-500/80 bg-slate-900/60 pl-5 py-3 pr-4 rounded-r-lg italic text-slate-300 my-6"
+              className="my-8 border-l-2 border-red-600 bg-neutral-900/40 py-3 pl-6 pr-4 italic text-neutral-200 text-xl leading-relaxed"
             >
               {trimmed.replace(/^>\s+/, "")}
             </blockquote>
           );
         }
 
-        // Párrafos convencionales
+        // Primer párrafo: Párrafo de apertura (Lead)
+        if (idx === 0) {
+          return (
+            <p
+              key={idx}
+              className="text-xl sm:text-[22px] leading-relaxed text-neutral-200 font-normal tracking-normal"
+            >
+              {trimmed}
+            </p>
+          );
+        }
+
+        // Párrafos regulares de lectura
         return (
           <p
             key={idx}
-            className="text-lg leading-relaxed text-slate-300 font-normal tracking-normal"
+            className="text-lg sm:text-[19px] leading-[1.8] text-neutral-300 font-light"
           >
             {trimmed}
           </p>
@@ -74,27 +90,32 @@ function ArticleBody({ content }: { content: string }) {
   );
 }
 
-// Adaptar a la fuente de datos real (Prisma, CMS o mock DB local)
+// Fuente de datos (Ajustable a DB / CMS)
 async function getArticle(slug: string): Promise<Article | null> {
-  // Simulación: Reemplazar por tu consulta real db.article.findUnique({ where: { slug } })
   return {
     slug,
+    category: "Historia Monetaria",
     title: "El Origen del Banco Central y la Transformación Monetaria de 1935",
+    subtitle:
+      "Cómo la Gran Depresión forzó el abandono del patrón oro y sentó las bases de la banca moderna en la República Argentina.",
     author: "Redacción Económica",
     publishedAt: "17 de Septiembre, 2026",
     readTime: "6 min de lectura",
-    imageUrl: "", // Cadena vacía para forzar fallback
-    imageCaption: "Fachada histórica del Banco Central de la República Argentina.",
-    content: `## Antecedentes de la Reforma
-En 1935, Argentina transformó radicalmente su arquitectura financiera tras los impactos de la Gran Depresión mundial. La fragmentación previa de las entidades de crédito impedía una respuesta coordinada ante shocks externos.
+    imageUrl: "/images/article-bcra-1935.png",
+    imageCaption:
+      "Edificio histórico del Banco Central de la República Argentina, Reconquista 266.",
+    content: `En 1935, Argentina transformó radicalmente su arquitectura financiera tras los impactos de la Gran Depresión mundial. La fragmentación previa de las entidades de crédito impedía una respuesta coordinada ante shocks externos.
 
-> "La creación del banco central no fue solo un cambio administrativo, sino el fin del patrón oro ortodoxo en el Río de la Plata."
+## Antecedentes de la Reforma
+Bajo el modelo agroexportador, la Caja de Conversión operaba de forma pasiva ante los flujos comerciales. La crisis de los años treinta demostró la vulnerabilidad extrema del sistema financiero ante la caída de las exportaciones y la fuga de capitales hacia las plazas centrales.
+
+> "La creación del banco central no fue un mero cambio administrativo, sino el fin del patrón oro ortodoxo en el Río de la Plata."
 
 ## Estructura y Primer Directorio
-Bajo la influencia técnica de los informes de Sir Otto Niemeyer y la ejecución de Raúl Prebisch, la institución asumió el monopolio de la emisión monetaria y el rol de prestamista de última instancia.
+Bajo la influencia técnica de las recomendaciones de Sir Otto Niemeyer y la decisiva ejecución económica de Raúl Prebisch, la flamante institución asumió de forma integral el monopolio de la emisión y el rol clave de prestamista de última instancia.
 
 ### Mecanismos de Control de Liquidez
-El nuevo esquema permitió consolidar la deuda flotante e instrumentar el primer mercado de pagarés bancarios, regulando activamente las reservas líquidas del sistema financiero argentino.`,
+El nuevo esquema permitió consolidar la deuda flotante e instrumentar el primer mercado regulado de títulos públicos, otorgando al país herramientas soberanas de control macroprudencial.`,
   };
 }
 
@@ -110,45 +131,54 @@ export default async function ArticlePage({
     notFound();
   }
 
-  const editorialImage =
-    article.imageUrl && article.imageUrl.trim() !== ""
-      ? article.imageUrl
-      : "/images/article-bcra-1935.png";
-
   return (
-    <article className="min-h-screen bg-slate-950 text-slate-100 py-10 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-3xl mx-auto">
+    <article className="min-h-screen bg-neutral-950 text-neutral-100 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-2xl mx-auto">
+        {/* Navegación sutil */}
         <nav className="mb-8">
           <Link
             href="/articulos"
-            className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-slate-200 transition-colors"
+            className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-neutral-400 hover:text-red-500 transition-colors font-sans"
           >
-            <ArrowLeft className="h-4 w-4" />
-            Volver a Artículos
+            <ArrowLeft className="h-3.5 w-3.5" />
+            Volver al índice
           </Link>
         </nav>
 
-        <header className="mb-8 space-y-4">
-          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-50 leading-tight">
+        {/* Cabecera Editorial */}
+        <header className="space-y-4 mb-8">
+          {/* Rubric / Kicker estilo The Economist */}
+          <div className="inline-block border-b-2 border-red-600 pb-0.5 font-sans text-xs font-bold uppercase tracking-[0.2em] text-red-600">
+            {article.category || "Análisis"}
+          </div>
+
+          <h1 className="font-serif text-3xl sm:text-5xl font-normal tracking-tight text-neutral-50 leading-[1.15]">
             {article.title}
           </h1>
 
-          <div className="flex flex-wrap items-center gap-4 text-xs sm:text-sm text-slate-400 border-b border-slate-800 pb-6">
+          {article.subtitle && (
+            <p className="font-serif text-lg sm:text-xl text-neutral-400 italic leading-relaxed pt-1">
+              {article.subtitle}
+            </p>
+          )}
+
+          {/* Metadatos */}
+          <div className="flex flex-wrap items-center gap-4 text-xs font-sans text-neutral-500 pt-4 border-t border-neutral-850">
             {article.author && (
               <span className="inline-flex items-center gap-1.5">
-                <User className="h-4 w-4 text-slate-500" />
+                <User className="h-3.5 w-3.5 text-neutral-400" />
                 {article.author}
               </span>
             )}
             {article.publishedAt && (
               <span className="inline-flex items-center gap-1.5">
-                <Calendar className="h-4 w-4 text-slate-500" />
+                <Calendar className="h-3.5 w-3.5 text-neutral-400" />
                 {article.publishedAt}
               </span>
             )}
             {article.readTime && (
               <span className="inline-flex items-center gap-1.5">
-                <Clock className="h-4 w-4 text-slate-500" />
+                <Clock className="h-3.5 w-3.5 text-neutral-400" />
                 {article.readTime}
               </span>
             )}
@@ -156,23 +186,25 @@ export default async function ArticlePage({
         </header>
 
         {/* Imagen Editorial */}
-        <figure className="my-8 overflow-hidden rounded-xl border border-slate-800 bg-slate-900 shadow-2xl">
-          <div className="relative aspect-[16/9] w-full bg-slate-900">
-            <Image
-              src={editorialImage}
-              alt={article.title}
-              fill
-              priority
-              sizes="(max-width: 768px) 100vw, 768px"
-              className="object-cover"
-            />
-          </div>
-          {article.imageCaption && (
-            <figcaption className="p-3 text-center text-xs text-slate-400 border-t border-slate-850 bg-slate-950/70">
-              {article.imageCaption}
-            </figcaption>
-          )}
-        </figure>
+        {article.imageUrl && (
+          <figure className="my-10 overflow-hidden rounded-sm border border-neutral-850 bg-neutral-900">
+            <div className="relative aspect-[16/10] w-full bg-neutral-900">
+              <Image
+                src={article.imageUrl}
+                alt={article.title}
+                fill
+                priority
+                sizes="(max-width: 768px) 100vw, 680px"
+                className="object-cover"
+              />
+            </div>
+            {article.imageCaption && (
+              <figcaption className="p-3 text-left font-sans text-xs text-neutral-400 border-t border-neutral-850 bg-neutral-900/50">
+                {article.imageCaption}
+              </figcaption>
+            )}
+          </figure>
+        )}
 
         {/* Cuerpo del Artículo */}
         <main className="mt-8">
