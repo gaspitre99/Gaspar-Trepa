@@ -33,21 +33,17 @@ export default function CalculadoraInflacion() {
 
   // Tangible metrics
   const kilosAsado = Math.floor(Math.abs(gananciaReal) / 6000); // approx $6000 ARS / kg asado
-  const dolaresMep = (Math.abs(gananciaReal) / 1050).toFixed(2); // approx $1050 ARS / USD MEP
+  const dolaresMep = 1050 > 0 ? (Math.abs(gananciaReal) / 1050).toFixed(2) : '—'; // approx $1050 ARS / USD MEP
 
   return (
-    <div className={`p-6 rounded-xl shadow-lg border transition-all duration-500 max-w-md mx-auto w-full relative overflow-hidden ${isPositivo ? 'bg-emerald-950 border-emerald-500 shadow-emerald-500/20' : 'bg-slate-900 border-rose-500 shadow-rose-500/20'}`}>
+    <div className="p-6 rounded-md shadow-sm border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 transition-all duration-500 max-w-md mx-auto w-full relative overflow-hidden">
 
-      {isPositivo && (
-        <div className="absolute inset-0 bg-emerald-500/5 animate-pulse pointer-events-none"></div>
-      )}
-
-      <h2 className='text-2xl font-bold mb-4 text-white relative z-10'>Calculadora Real vs Inflación</h2>
+      <h2 className='font-serif text-3xl font-medium tracking-tight text-slate-900 dark:text-slate-100 mb-6 relative z-10'>Calculadora Real vs Inflación</h2>
 
       <div className='space-y-6 relative z-10'>
         <div>
           <div className="flex justify-between mb-2">
-            <label className="text-slate-300 text-sm font-semibold">Capital Inicial: {formatPrice(capital)}</label>
+            <label className="text-[11px] font-bold uppercase tracking-widest text-slate-500">Capital Inicial: <span className="font-mono tabular-nums">{formatPrice(capital)}</span></label>
           </div>
           <input
             type='range'
@@ -62,7 +58,7 @@ export default function CalculadoraInflacion() {
 
         <div>
           <div className="flex justify-between mb-2">
-            <label className="text-slate-300 text-sm font-semibold">TNA Estimada: {tna}%</label>
+            <label className="text-[11px] font-bold uppercase tracking-widest text-slate-500">TNA Estimada: <span className="font-mono tabular-nums">{tna}%</span></label>
           </div>
           <input
             type='range'
@@ -71,13 +67,13 @@ export default function CalculadoraInflacion() {
             step="1"
             value={tna}
             onChange={(e) => setTna(Number(e.target.value))}
-            className="w-full accent-emerald-500"
+            className="w-full accent-slate-500"
           />
         </div>
 
         <div>
           <div className="flex justify-between mb-2">
-            <label className="text-slate-300 text-sm font-semibold">Inflación Mensual: {inflacion}%</label>
+            <label className="text-[11px] font-bold uppercase tracking-widest text-slate-500">Inflación Mensual: <span className="font-mono tabular-nums">{inflacion}%</span></label>
           </div>
           <input
             type='range'
@@ -86,35 +82,35 @@ export default function CalculadoraInflacion() {
             step="0.1"
             value={inflacion}
             onChange={(e) => setInflacion(Number(e.target.value))}
-            className="w-full accent-rose-500"
+            className="w-full accent-slate-500"
           />
         </div>
       </div>
 
-      <div className='mt-8 space-y-3 p-4 bg-slate-800/80 rounded-lg border border-slate-700 relative z-10'>
+      <div className='mt-8 space-y-3 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-md border border-slate-200 dark:border-slate-800 relative z-10'>
         <div className='flex justify-between items-center'>
-          <span className='text-slate-400 text-sm'>Nominal (1 mes):</span>
-          <span className='font-semibold text-white'>{formatPrice(capitalFinalNominal)}</span>
+          <span className='text-[11px] font-bold uppercase tracking-widest text-slate-500'>Nominal (1 mes):</span>
+          <span className='font-mono font-bold tracking-tight tabular-nums text-slate-900 dark:text-slate-100'>{formatPrice(capitalFinalNominal)}</span>
         </div>
-        <div className='flex justify-between items-center pt-3 border-t border-slate-700'>
-          <span className='font-medium text-slate-300'>Resultado Real:</span>
-          <span className={`font-bold text-lg ${isPositivo ? 'text-emerald-400' : 'text-rose-400'}`}>
+        <div className='flex justify-between items-center pt-3 border-t border-slate-200 dark:border-slate-800'>
+          <span className='text-[11px] font-bold uppercase tracking-widest text-slate-500'>Resultado Real:</span>
+          <span className={`font-mono font-bold tracking-tight tabular-nums text-lg ${isPositivo ? 'text-emerald-500 dark:text-emerald-400' : 'text-rose-500 dark:text-rose-400'}`}>
             {isPositivo ? '+' : ''}{formatPrice(gananciaReal)}
           </span>
         </div>
 
-        <div className='mt-4 pt-4 border-t border-slate-700'>
-          <div className="text-center text-sm font-medium text-slate-300 mb-2">
+        <div className='mt-4 pt-4 border-t border-slate-200 dark:border-slate-800'>
+          <div className="text-center text-[11px] font-bold uppercase tracking-widest text-slate-500 mb-2">
             {isPositivo ? 'Poder Adquisitivo Preservado:' : 'Poder Adquisitivo Perdido:'}
           </div>
           <div className="flex justify-center gap-4 text-xs">
-            <div className={`px-3 py-2 rounded-lg bg-slate-900 border ${isPositivo ? 'border-emerald-500/50 text-emerald-400' : 'border-rose-500/50 text-rose-400'}`}>
-              <span className="block text-lg font-bold mb-1">🥩 {kilosAsado} kg</span>
+            <div className={`px-3 py-2 rounded-md bg-white dark:bg-slate-900 border ${isPositivo ? 'border-emerald-200 dark:border-emerald-500/50 text-emerald-600 dark:text-emerald-400' : 'border-rose-200 dark:border-rose-500/50 text-rose-600 dark:text-rose-400'}`}>
+              <span className="block text-lg font-mono tabular-nums font-bold mb-1">🥩 {kilosAsado} kg</span>
               de Asado
             </div>
-            <div className={`px-3 py-2 rounded-lg bg-slate-900 border ${isPositivo ? 'border-emerald-500/50 text-emerald-400' : 'border-rose-500/50 text-rose-400'}`}>
-              <span className="block text-lg font-bold mb-1">💵 {dolaresMep}</span>
-              USD MEP
+            <div className={`px-3 py-2 rounded-md bg-white dark:bg-slate-900 border ${isPositivo ? 'border-emerald-200 dark:border-emerald-500/50 text-emerald-600 dark:text-emerald-400' : 'border-rose-200 dark:border-rose-500/50 text-rose-600 dark:text-rose-400'}`}>
+              <span className="block text-lg font-mono tabular-nums font-bold mb-1">💵 U$S {dolaresMep}</span>
+              MEP
             </div>
           </div>
         </div>
