@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { Compass, Layout, Wrench, BookOpen, Newspaper, Landmark } from 'lucide-react';
+import { Compass, Layout, Wrench, BookOpen, GraduationCap, Coins, Wallet, Gamepad2, Flame, Newspaper, Landmark } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 
 import SidebarItem from './sidebar-item';
@@ -12,9 +12,19 @@ const routes = [
     href: '/',
   },
   {
+    icon: Compass,
+    label: 'Inicio / Explorar',
+    href: '/search',
+  },
+  {
     icon: Newspaper,
     label: 'Artículos',
     href: '/articulos',
+  },
+  {
+    icon: GraduationCap,
+    label: 'Cursos',
+    href: '/courses',
   },
   {
     icon: Wrench,
@@ -22,9 +32,29 @@ const routes = [
     href: '/herramientas',
   },
   {
+    icon: Coins,
+    label: 'Monitor de Cotizaciones',
+    href: '/herramientas/monitor',
+  },
+  {
+    icon: Wallet,
+    label: 'Comparador de Billeteras',
+    href: '/herramientas/billeteras',
+  },
+  {
     icon: Landmark,
     label: 'Historia Monetaria',
     href: '/herramientas/historia-monetaria',
+  },
+  {
+    icon: Gamepad2,
+    label: 'Preciodle',
+    href: '/juegos/preciodle',
+  },
+  {
+    icon: Flame,
+    label: 'Real o Chamuyo',
+    href: '/juegos/real-o-chamuyo',
   },
   {
     icon: BookOpen,
