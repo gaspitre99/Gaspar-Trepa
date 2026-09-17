@@ -36,7 +36,7 @@ export async function PATCH(req: Request, { params }: { params: { courseId: stri
     });
     return NextResponse.json(course);
   } catch (error) {
-    console.log('[COURSE_ID]', error instanceof Error ? error.message : String(error));
+    console.error('[COURSE_ID]', error instanceof Error ? error.message : 'Unknown error');
     return new NextResponse('Internal Error', { status: 500 });
   }
 }
