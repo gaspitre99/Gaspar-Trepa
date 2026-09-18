@@ -1,10 +1,13 @@
-export default function PlaceholderPage() {
+import React from 'react';
+import dynamic from 'next/dynamic';
+
+// Dynamic import with SSR disabled to prevent hydration errors from localStorage usage
+const Preciodle = dynamic(() => import('@/components/games/preciodle'), { ssr: false });
+
+export default function PreciodlePage() {
   return (
-    <div className="p-6 h-full flex items-center justify-center">
-      <div className="bg-slate-900/70 border border-slate-800 rounded-xl p-8 text-center text-slate-400 w-full max-w-md">
-        <h1 className="text-2xl font-bold mb-4">Próximamente</h1>
-        <p>Esta sección estará disponible muy pronto.</p>
-      </div>
+    <div className="bg-slate-950 text-slate-100 min-h-screen p-6">
+      <Preciodle />
     </div>
   );
 }
