@@ -104,7 +104,6 @@ const MarketTicker = () => {
             </div>
           ))}
         </div>
-        {/* Duplicado para loop continuo */}
         <div className="flex shrink-0 items-center animate-marquee group-hover:[animation-play-state:paused] min-w-full justify-around gap-8 pr-8" aria-hidden="true">
           {data.map((asset, idx) => (
             <div key={`dup-${idx}`} className="inline-flex items-center space-x-2 shrink-0">
