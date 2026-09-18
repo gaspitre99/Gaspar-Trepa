@@ -62,15 +62,9 @@ export default function PortfolioRoulette() {
   };
 
   return (
-<<<<<<< HEAD
-    <div className="bg-slate-900/50 border border-slate-800 rounded-sm shadow-sm p-6 max-w-md mx-auto w-full relative overflow-hidden">
-      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-blue-500"></div>
-      <h2 className="font-serif text-2xl font-medium text-slate-200 mb-2">Ruleta de Estrategia</h2>
-=======
     <div className="bg-white dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-sm shadow-sm p-6 max-w-md mx-auto w-full relative overflow-hidden">
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 to-blue-500"></div>
       <h2 className="font-serif text-2xl font-medium text-slate-900 dark:text-slate-100 mb-2">Ruleta de Estrategia</h2>
->>>>>>> origin/main
       <p className="text-slate-400 text-sm mb-6">Encontrá tu asignación ideal de activos argentinos en 1 clic.</p>
 
       <div className="flex gap-2 mb-6">
@@ -121,16 +115,6 @@ export default function PortfolioRoulette() {
         )}
       </div>
 
-<<<<<<< HEAD
-      <div className="flex flex-col gap-2">
-        <div className="flex gap-3">
-          <Button
-            onClick={spin}
-            disabled={spinning}
-            className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded-sm"
-          >
-            {spinning ? 'Girando...' : 'Ver Cartera Teórica'}
-=======
       <div className="flex gap-3">
         <Button
           onClick={spin}
@@ -144,16 +128,8 @@ export default function PortfolioRoulette() {
         {result && (
           <Button onClick={share} variant="outline" className="border-slate-600 text-slate-900 bg-blue-100 hover:bg-blue-200">
             <Share2 className="h-4 w-4" />
->>>>>>> origin/main
           </Button>
-
-          {result && (
-            <Button onClick={share} variant="outline" className="border-emerald-600 text-emerald-400 hover:bg-emerald-900">
-              <Share2 className="h-4 w-4" />
-            </Button>
-          )}
-        </div>
-        <p className="text-[10px] text-slate-500 mt-1 text-center w-full block">*Asignación teórica de activos según perfil modelo. No constituye recomendación directa.</p>
+        )}
       </div>
 
       {result && (

@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { Search } from 'lucide-react';
 import { articlesData } from '@/lib/articles-data';
 import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
 
 export default function ArticulosPage() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -30,71 +29,108 @@ export default function ArticulosPage() {
   }, [searchQuery, selectedCategory]);
 
   return (
-    <div className="p-6 max-w-5xl mx-auto bg-slate-950 min-h-full text-slate-100">
-      <div className="mb-8 space-y-4">
-        <h1 className="text-3xl font-bold tracking-tight text-white">Historia & Artículos</h1>
-        <p className="text-slate-400 text-lg">
-          Explora nuestra colección curada de ensayos sobre historia monetaria, escuela austríaca y crisis económicas.
-        </p>
-      </div>
+    <div className="min-h-screen bg-neutral-950 text-neutral-100 py-10 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto">
 
-      <div className="flex flex-col md:flex-row gap-4 mb-8 items-start md:items-center justify-between">
-        <div className="relative w-full md:w-96">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-          <Input
-            placeholder="Buscar artículos..."
-            className="pl-9 bg-slate-900 border-slate-800 text-slate-100 placeholder:text-slate-500"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </div>
-
-        <div className="flex flex-wrap gap-2">
-          <Badge
-            variant={selectedCategory === null ? 'default' : 'outline'}
-            className="cursor-pointer bg-slate-800 hover:bg-slate-700 text-slate-100 border-slate-700"
-            onClick={() => setSelectedCategory(null)}
-          >
-            Todos
-          </Badge>
-          {categories.map(category => (
-            <Badge
-              key={category}
-              variant={selectedCategory === category ? 'default' : 'outline'}
-              className="cursor-pointer bg-slate-800 hover:bg-slate-700 text-slate-100 border-slate-700"
-              onClick={() => setSelectedCategory(category)}
-            >
-              {category}
-            </Badge>
-          ))}
-        </div>
-      </div>
-
-      <div className="grid gap-6">
-        {filteredArticles.length > 0 ? (
-          filteredArticles.map(article => (
-            <Link key={article.slug} href={`/articulos/${article.slug}`}>
-              <div className="group p-6 rounded-lg bg-slate-900/70 border border-slate-800 text-slate-100 shadow-sm hover:shadow-md hover:border-slate-700 transition-all duration-200">
-                <div className="flex items-center gap-2 mb-3">
-                  <Badge variant="secondary" className="font-medium bg-slate-800 text-slate-200 hover:bg-slate-700">{article.category}</Badge>
-                  <span className="text-sm text-slate-500">•</span>
-                  <span className="text-sm text-slate-500">{article.date}</span>
-                </div>
-                <h2 className="text-2xl font-bold mb-2 group-hover:text-blue-400 transition-colors">{article.title}</h2>
-                <p className="text-lg text-slate-400 mb-4 font-serif">{article.subtitle}</p>
-                <p className="text-sm mb-4 line-clamp-2 text-slate-300">{article.summary}</p>
-                <div className="flex items-center justify-between text-sm text-slate-500">
-                  <span className="font-medium">Por {article.author}</span>
-                  <span>{article.readTime} min de lectura</span>
-                </div>
-              </div>
-            </Link>
-          ))
-        ) : (
-          <div className="text-center py-12 text-slate-500">
-            No se encontraron artículos que coincidan con tu búsqueda.
+        {/* Cabecera de Sección */}
+        <header className="mb-10 space-y-3 border-b border-neutral-800 pb-8">
+          <div className="inline-block border-b-2 border-red-600 pb-0.5 font-sans text-xs font-bold uppercase tracking-[0.2em] text-red-600">
+            Archivo & Análisis
           </div>
-        )}
+          <h1 className="font-serif text-4xl sm:text-5xl font-normal tracking-tight text-neutral-50 leading-tight">
+            Historia & Artículos
+          </h1>
+          <p className="font-serif text-lg sm:text-xl text-neutral-400 italic leading-relaxed">
+            Ensayos curados sobre historia monetaria, escuela austríaca y crisis económicas.
+          </p>
+        </header>
+
+        {/* Barra de Búsqueda y Filtros */}
+        <div className="flex flex-col md:flex-row gap-4 mb-10 items-start md:items-center justify-between">
+          <div className="relative w-full md:w-80">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-500" />
+            <Input
+              placeholder="Buscar ensayos o conceptos..."
+              className="pl-9 bg-neutral-900 border-neutral-800 text-neutral-100 placeholder:text-neutral-500 focus-visible:ring-1 focus-visible:ring-red-600 text-sm font-sans"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+
+          <div className="flex flex-wrap gap-1.5 items-center">
+            <button
+              onClick={() => setSelectedCategory(null)}
+              className={`px-3 py-1 text-xs font-sans uppercase tracking-wider transition-colors border ${
+                selectedCategory === null
+                  ? 'bg-red-600 border-red-600 text-white font-semibold'
+                  : 'bg-neutral-900 border-neutral-800 text-neutral-400 hover:text-neutral-200 hover:border-neutral-700'
+              }`}
+            >
+              Todos
+            </button>
+            {categories.map((category) => (
+              <button
+                key={category}
+                onClick={() => setSelectedCategory(category)}
+                className={`px-3 py-1 text-xs font-sans uppercase tracking-wider transition-colors border ${
+                  selectedCategory === category
+                    ? 'bg-red-600 border-red-600 text-white font-semibold'
+                    : 'bg-neutral-900 border-neutral-800 text-neutral-400 hover:text-neutral-200 hover:border-neutral-700'
+                }`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Lista de Artículos */}
+        <div className="divide-y divide-neutral-800 border-t border-b border-neutral-800">
+          {filteredArticles.length > 0 ? (
+            filteredArticles.map((article) => (
+              <article key={article.slug} className="py-8 group">
+                <Link href={`/articulos/${article.slug}`} className="block space-y-3">
+                  {/* Kicker y Fecha */}
+                  <div className="flex items-center gap-3 font-sans text-xs">
+                    <span className="font-bold uppercase tracking-widest text-red-600">
+                      {article.category}
+                    </span>
+                    <span className="text-neutral-600">•</span>
+                    <span className="text-neutral-500">{article.date}</span>
+                  </div>
+
+                  {/* Título Principal */}
+                  <h2 className="font-serif text-2xl sm:text-3xl font-normal text-neutral-100 group-hover:text-red-500 transition-colors leading-snug">
+                    {article.title}
+                  </h2>
+
+                  {/* Subtítulo */}
+                  {article.subtitle && (
+                    <p className="font-serif text-neutral-400 italic text-base sm:text-lg leading-relaxed">
+                      {article.subtitle}
+                    </p>
+                  )}
+
+                  {/* Extracto */}
+                  <p className="font-serif text-neutral-300 font-light text-sm sm:text-base leading-relaxed line-clamp-2">
+                    {article.summary}
+                  </p>
+
+                  {/* Firma y Lectura */}
+                  <div className="flex items-center justify-between pt-2 font-sans text-xs text-neutral-500 uppercase tracking-wider">
+                    <span>Por {article.author}</span>
+                    <span>{article.readTime} min de lectura</span>
+                  </div>
+                </Link>
+              </article>
+            ))
+          ) : (
+            <div className="text-center py-16 font-serif text-neutral-500 italic text-lg">
+              No se encontraron artículos que coincidan con tu búsqueda.
+            </div>
+          )}
+        </div>
+
       </div>
     </div>
   );
