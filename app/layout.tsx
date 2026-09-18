@@ -52,7 +52,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <ClerkProvider localization={esES as any} publishableKey={publishableKey}>
       <html lang='es' className={`${sans.variable} ${serif.variable} ${mono.variable}`}>
-        <body className="font-sans antialiased text-slate-900 bg-white dark:bg-slate-950 dark:text-slate-50">
+        <body className="font-sans antialiased text-neutral-900 bg-white dark:bg-neutral-950 dark:text-neutral-100">
           <ToastProvider/>
           {children}
         </body>
