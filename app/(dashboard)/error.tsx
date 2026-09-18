@@ -15,11 +15,11 @@ export default function ErrorBoundary({
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh] p-6">
-      <div className="max-w-md w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-md p-8 shadow-sm text-center">
-        <h2 className="font-serif text-2xl font-medium tracking-tight text-slate-900 dark:text-zinc-100 mb-4">
+      <div className="max-w-md w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-md p-8 shadow-sm text-center">
+        <h2 className="font-serif text-2xl font-medium tracking-tight text-slate-900 dark:text-slate-100 mb-4">
           Error en la Consulta
         </h2>
-        <p className="text-zinc-500 mb-8 leading-relaxed text-sm">
+        <p className="text-slate-500 mb-8 leading-relaxed text-sm">
           No pudimos conectar con los servidores financieros en este momento. Por favor, intenta de nuevo más tarde o vuelve a cargar el módulo.
         </p>
         <button

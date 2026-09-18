@@ -19,6 +19,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ href, icon: Icon, label }) =>
   const onClick = () => {
     router.push(href);
   };
+
   return (
     <button
       onClick={onClick}

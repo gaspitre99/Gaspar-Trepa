@@ -14,8 +14,8 @@ Estoy desarrollando una plataforma de gestión de aprendizaje (LMS) utilizando e
 
 **Nuestro Sistema de Diseño Actual:**
 - **Tipografía:** Utilizamos un estilo de "Prensa Financiera". 'Newsreader' para encabezados con serif, 'Inter' para el texto general sans-serif, y 'JetBrains_Mono' con 'tabular-nums' para todos los números, precios y porcentajes.
-- **Paleta de Colores y Formas:** Fondos neutros (white / zinc-900) con bordes definidos (rounded-sm o rounded-md). Los colores verde o rojo se reservan exclusivamente para variaciones numéricas (ej. ganancias/pérdidas).
-- **Micro-etiquetas:** Utilizamos la clase utilitaria de Tailwind: `text-[11px] font-bold uppercase tracking-widest text-zinc-500`.
+- **Paleta de Colores y Formas:** Fondos neutros (white / slate-900) con bordes definidos (rounded-sm o rounded-md). Los colores verde o rojo se reservan exclusivamente para variaciones numéricas (ej. ganancias/pérdidas).
+- **Micro-etiquetas:** Utilizamos la clase utilitaria de Tailwind: `text-[11px] font-bold uppercase tracking-widest text-slate-500`.
 
 **El Objetivo:**
 Quiero dar un salto de calidad en la interfaz para que se vea **extremadamente profesional, limpia y minimalista**. Busco mejorar la "integridad visual" del sitio, lo que significa:

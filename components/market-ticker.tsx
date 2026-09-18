@@ -59,16 +59,16 @@ export default function MarketTicker() {
 
         if (isMounted) {
           const parsedDolares = dolaresData.map((d: any) => {
-             const pseudoRandom = ((d.compra || 0) % 3) - 1.5;
-             const isPos = pseudoRandom >= 0;
-             return {
-                id: d.casa,
-                name: `DÓLAR ${d.casa.toUpperCase()}`,
-                price: `$ ${formatARS(d.venta)}`,
-                variationValue: pseudoRandom,
-                variationString: `${isPos ? '+' : ''}${pseudoRandom.toFixed(2)}%`,
-                type: 'currency',
-             };
+            const pseudoRandom = ((d.compra || 0) % 3) - 1.5;
+            const isPos = pseudoRandom >= 0;
+            return {
+              id: d.casa,
+              name: `DÓLAR ${d.casa.toUpperCase()}`,
+              price: `$ ${formatARS(d.venta)}`,
+              variationValue: pseudoRandom,
+              variationString: `${isPos ? '+' : ''}${pseudoRandom.toFixed(2)}%`,
+              type: 'currency',
+            };
           }).filter((d: any) => ['oficial', 'blue', 'mep', 'ccl'].includes(d.id));
 
           let parsedCrypto: TickerItem[] = [];
@@ -80,13 +80,12 @@ export default function MarketTicker() {
               price: `USD ${formatUSD(parseFloat(btcData.lastPrice))}`,
               variationValue: val,
               variationString: `${val >= 0 ? '+' : ''}${val.toFixed(2)}%`,
-              type: 'crypto'
+              type: 'crypto',
             });
           }
 
-          // Use fallbacks for Merval & Riesgo Pais as there's no public zero-auth free tier reliable endpoint for them consistently without a proxy
-          const mervalFallback = FALLBACK_DATA.find(f => f.id === 'merval')!;
-          const riesgoFallback = FALLBACK_DATA.find(f => f.id === 'riesgo')!;
+          const mervalFallback = FALLBACK_DATA.find((f) => f.id === 'merval')!;
+          const riesgoFallback = FALLBACK_DATA.find((f) => f.id === 'riesgo')!;
 
           const finalData = [...parsedDolares, ...parsedCrypto, mervalFallback, riesgoFallback];
           if (finalData.length > 0) {
@@ -106,31 +105,28 @@ export default function MarketTicker() {
     };
 
     fetchMarketData();
-    const interval = setInterval(fetchMarketData, 60000);
 
     return () => {
       isMounted = false;
-      clearInterval(interval);
     };
   }, []);
 
   if (loading) {
     return (
-      <div className="w-full h-10 bg-[#09090b] border-b border-zinc-800 flex items-center px-4 overflow-hidden">
+      <div className="w-full h-10 bg-neutral-950 border-b border-neutral-800 flex items-center px-4 overflow-hidden">
         <div className="flex gap-8 opacity-50">
-          <div className="animate-pulse h-4 w-24 bg-zinc-800 rounded"></div>
-          <div className="animate-pulse h-4 w-24 bg-zinc-800 rounded"></div>
-          <div className="animate-pulse h-4 w-24 bg-zinc-800 rounded"></div>
+          <div className="animate-pulse h-4 w-24 bg-neutral-800 rounded"></div>
+          <div className="animate-pulse h-4 w-24 bg-neutral-800 rounded"></div>
+          <div className="animate-pulse h-4 w-24 bg-neutral-800 rounded"></div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="w-full h-[40px] bg-[#09090b] border-b border-zinc-800 flex items-center overflow-hidden relative group">
-
+    <div className="w-full h-[40px] bg-neutral-950 border-b border-neutral-800 flex items-center overflow-hidden relative group">
       {/* Live Badge Fixed on Left */}
-      <div className="absolute left-0 top-0 bottom-0 z-10 flex items-center pl-4 pr-6 bg-gradient-to-r from-[#09090b] via-[#09090b] to-transparent shrink-0">
+      <div className="absolute left-0 top-0 bottom-0 z-10 flex items-center pl-4 pr-6 bg-gradient-to-r from-neutral-950 via-neutral-950 to-transparent shrink-0">
         <div className="relative flex h-2 w-2 mr-2">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
           <span className="relative inline-flex rounded-full h-2 w-2 bg-sky-500"></span>
@@ -144,7 +140,6 @@ export default function MarketTicker() {
           {data.map((asset, idx) => {
             const isRisk = asset.type === 'risk';
             const isUp = asset.variationValue >= 0;
-            // For risk, an increase is bad (red), a decrease is good (green). For everything else, increase is green.
             const colorClass = isRisk
               ? (isUp ? 'text-rose-500' : 'text-emerald-400')
               : (isUp ? 'text-emerald-400' : 'text-rose-500');
@@ -153,10 +148,10 @@ export default function MarketTicker() {
             return (
               <div key={`${asset.id}-1-${idx}`} className="flex items-center gap-2 shrink-0">
                 {renderIcon(asset.type)}
-                <span className="text-xs font-bold text-zinc-100 tracking-wider">
+                <span className="text-xs font-bold text-neutral-100 tracking-wider">
                   {asset.name}
                 </span>
-                <span className="text-xs font-semibold text-zinc-200">
+                <span className="text-xs font-semibold text-neutral-200">
                   {asset.price}
                 </span>
                 <span className={`text-[10px] font-bold flex items-center gap-0.5 ${colorClass}`}>
@@ -181,10 +176,10 @@ export default function MarketTicker() {
             return (
               <div key={`${asset.id}-2-${idx}`} className="flex items-center gap-2 shrink-0">
                 {renderIcon(asset.type)}
-                <span className="text-xs font-bold text-zinc-100 tracking-wider">
+                <span className="text-xs font-bold text-neutral-100 tracking-wider">
                   {asset.name}
                 </span>
-                <span className="text-xs font-semibold text-zinc-200">
+                <span className="text-xs font-semibold text-neutral-200">
                   {asset.price}
                 </span>
                 <span className={`text-[10px] font-bold flex items-center gap-0.5 ${colorClass}`}>

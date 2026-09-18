@@ -48,13 +48,23 @@ export const calculateAccumulatedInflation = (
   const breakdown: MonthlyRate[] = [];
   let currentAmount = initialAmount;
 
-  const data = MOCK_INFLATION_DATA.filter((d) => {
-    const isAfterStart = d.year > startYear || (d.year === startYear && d.month >= startMonth);
-    const isBeforeEnd = d.year < endYear || (d.year === endYear && d.month <= endMonth);
-    return isAfterStart && isBeforeEnd;
-  });
+  if (startYear > endYear || (startYear === endYear && startMonth > endMonth)) {
+    return {
+      finalAmount: currentAmount,
+      accumulatedPercentage: 0,
+      monthlyBreakdown: breakdown,
+    };
+  }
 
-  for (const record of data) {
+  for (const record of MOCK_INFLATION_DATA) {
+    if (record.year > endYear || (record.year === endYear && record.month > endMonth)) {
+      break;
+    }
+
+    if (record.year < startYear || (record.year === startYear && record.month < startMonth)) {
+      continue;
+    }
+
     breakdown.push(record);
     currentAmount = currentAmount * (1 + record.rate / 100);
   }
@@ -76,18 +86,20 @@ export type AnnualSeries = {
 };
 
 export const getAnnualInflationSeries = (): AnnualSeries[] => {
-  const series: AnnualSeries[] = [];
-  const years = Array.from(new Set(MOCK_INFLATION_DATA.map((d) => d.year)));
+  if (MOCK_INFLATION_DATA.length === 0) return [];
 
-  for (const year of years) {
-    const yearData = MOCK_INFLATION_DATA.filter((d) => d.year === year);
-    let currentAmount = 100;
-    for (const record of yearData) {
-      currentAmount = currentAmount * (1 + record.rate / 100);
-    }
-    const annualRate = ((currentAmount - 100) / 100) * 100;
-    series.push({ year, rate: annualRate });
+  const seriesMap = new Map<number, number>();
+
+  for (const record of MOCK_INFLATION_DATA) {
+    const currentAmount = seriesMap.get(record.year) ?? 100;
+    seriesMap.set(record.year, currentAmount * (1 + record.rate / 100));
   }
 
-  return series;
+  const series: AnnualSeries[] = [];
+  seriesMap.forEach((amount, year) => {
+    const annualRate = ((amount - 100) / 100) * 100;
+    series.push({ year, rate: annualRate });
+  });
+
+  return series.sort((a, b) => a.year - b.year);
 };

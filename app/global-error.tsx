@@ -17,12 +17,12 @@ export default function GlobalError({
 
   return (
     <html>
-      <body className="font-sans antialiased text-slate-900 bg-white dark:bg-zinc-950 dark:text-zinc-50 min-h-screen flex flex-col items-center justify-center p-6">
-        <div className="max-w-md w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-md p-8 shadow-sm text-center">
-          <h2 className="font-serif text-2xl font-medium tracking-tight text-slate-900 dark:text-zinc-100 mb-4">
+      <body className="font-sans antialiased text-slate-900 bg-white dark:bg-slate-950 dark:text-slate-50 min-h-screen flex flex-col items-center justify-center p-6">
+        <div className="max-w-md w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-md p-8 shadow-sm text-center">
+          <h2 className="font-serif text-2xl font-medium tracking-tight text-slate-900 dark:text-slate-100 mb-4">
             Fallo Crítico del Sistema
           </h2>
-          <p className="text-zinc-500 mb-8 leading-relaxed">
+          <p className="text-slate-500 mb-8 leading-relaxed">
             Se ha producido un error inesperado al procesar la solicitud. Nuestros sistemas han registrado la incidencia.
           </p>
           <div className="flex flex-col gap-3">
@@ -34,7 +34,7 @@ export default function GlobalError({
             </button>
             <Link
               href="/"
-              className="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-slate-700 dark:text-zinc-300 px-4 py-2 rounded-md text-sm font-semibold hover:bg-zinc-50 dark:hover:bg-zinc-800 transition block text-center"
+              className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-md text-sm font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 transition block text-center"
             >
               Volver al inicio
             </Link>

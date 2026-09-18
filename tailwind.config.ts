@@ -6,7 +6,7 @@ module.exports = {
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
-	],
+  ],
   theme: {
     container: {
       center: true,
@@ -71,10 +71,10 @@ module.exports = {
           to: { height: 0 },
         },
         fill: {
-          from: { transform: "scaleX(0)" }
+          from: { transform: "scaleX(0)" },
         },
         enter: {
-          from: { opacity: 0, transform: "translateY(4px)" }
+          from: { opacity: 0, transform: "translateY(4px)" },
         },
         "marquee": {
           "0%": { transform: "translateX(0%)" },
