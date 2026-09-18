@@ -75,13 +75,18 @@ module.exports = {
         },
         enter: {
           from: { opacity: 0, transform: "translateY(4px)" }
-        }
+        },
+        "marquee": {
+          "0%": { transform: "translateX(0%)" },
+          "100%": { transform: "translateX(-100%)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         fill: "fill 700ms cubic-bezier(0.16, 1, 0.3, 1) both",
-        enter: "enter 400ms ease-out both"
+        enter: "enter 400ms ease-out both",
+        "marquee": "marquee 45s linear infinite",
       },
     },
   },

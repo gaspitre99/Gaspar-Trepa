@@ -31,7 +31,7 @@ export default function ArticulosPage() {
   return (
     <div className="min-h-screen bg-neutral-950 text-neutral-100 py-10 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
-        
+
         {/* Cabecera de Sección */}
         <header className="mb-10 space-y-3 border-b border-neutral-800 pb-8">
           <div className="inline-block border-b-2 border-red-600 pb-0.5 font-sans text-xs font-bold uppercase tracking-[0.2em] text-red-600">
