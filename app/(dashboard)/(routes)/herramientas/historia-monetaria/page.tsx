@@ -71,7 +71,7 @@ export default function HistoriaMonetariaPage() {
       <div className="max-w-5xl mx-auto space-y-8">
         <div className="space-y-4">
           <div className="flex items-center gap-2 mb-2">
-             <Link href="/herramientas" className="text-emerald-400 hover:underline text-sm flex items-center gap-1">
+             <Link href="/herramientas" className="text-sky-400 hover:underline text-sm flex items-center gap-1">
                <ArrowRight className="h-4 w-4 rotate-180" />
                Volver a Herramientas
              </Link>
@@ -86,13 +86,13 @@ export default function HistoriaMonetariaPage() {
           {/* Timeline */}
           <div className="space-y-6">
             <div className="flex items-center gap-2 mb-4">
-              <History className="h-5 w-5 text-emerald-400" />
+              <History className="h-5 w-5 text-sky-400" />
               <h2 className="text-2xl font-semibold text-white">Línea de Tiempo</h2>
             </div>
             <div className="relative border-l border-slate-700 ml-3 space-y-8">
               {currencies.map((currency) => (
                 <div key={currency.id} className="relative pl-6">
-                  <span className="absolute -left-[5px] top-1 h-2.5 w-2.5 rounded-full bg-emerald-500" />
+                  <span className="absolute -left-[5px] top-1 h-2.5 w-2.5 rounded-full bg-sky-500" />
                   <div className="flex flex-col gap-1">
                     <div className="flex flex-wrap items-center gap-2">
                       <span className="font-bold text-slate-200">{currency.name}</span>
@@ -122,7 +122,7 @@ export default function HistoriaMonetariaPage() {
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-slate-400 mb-2">Para tener un 1 Peso actual ($), se necesitarían:</p>
-                <div className="text-xl font-bold text-emerald-400 break-all">
+                <div className="text-xl font-bold text-sky-400 break-all">
                   10.000.000.000.000 m$n
                 </div>
                 <Badge variant="destructive" className="mt-2 bg-rose-500/20 text-rose-400 border-none">
@@ -135,7 +135,7 @@ export default function HistoriaMonetariaPage() {
           {/* Converter */}
           <div>
             <div className="flex items-center gap-2 mb-6">
-              <Calculator className="h-5 w-5 text-emerald-400" />
+              <Calculator className="h-5 w-5 text-sky-400" />
               <h2 className="text-2xl font-semibold text-white">Conversor Histórico</h2>
             </div>
             <Card className="bg-slate-900/70 border-slate-800 text-slate-100 shadow-md">
@@ -185,7 +185,7 @@ export default function HistoriaMonetariaPage() {
 
                 <div className="rounded-lg bg-slate-950 border border-slate-800 p-4 space-y-2 text-center">
                   <p className="text-sm text-slate-400 font-medium">Equivalente en Pesos Actuales ($)</p>
-                  <div className="text-3xl font-bold text-emerald-400">
+                  <div className="text-3xl font-bold text-sky-400">
                     $ {convertedAmount.toLocaleString('es-AR', { maximumFractionDigits: 6 })}
                   </div>
                   {selectedCurrency.zerosEliminated > 0 && (

@@ -59,12 +59,12 @@ function ArticleBody({ content }: { content: string }) {
           );
         }
 
-        // Cita editorial (Pull quote)
+        // Cita editorial (Pull quote) con acento celeste
         if (innerHTML.startsWith('> ')) {
           return (
             <blockquote
               key={idx}
-              className="my-8 border-l-2 border-red-600 bg-neutral-900/40 py-3 pl-6 pr-4 italic text-neutral-200 text-xl leading-relaxed"
+              className="my-8 border-l-2 border-sky-500 bg-neutral-900/40 py-3 pl-6 pr-4 italic text-neutral-200 text-xl leading-relaxed"
             >
               {innerHTML.replace(/^>\s+/, '')}
             </blockquote>
@@ -115,7 +115,7 @@ export default async function ArticlePage({
         <nav className="mb-8">
           <Link
             href="/articulos"
-            className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-neutral-400 hover:text-red-500 transition-colors font-sans"
+            className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-neutral-400 hover:text-sky-400 transition-colors font-sans"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
             Volver al índice
@@ -123,7 +123,7 @@ export default async function ArticlePage({
         </nav>
 
         <header className="space-y-4 mb-8">
-          <div className="inline-block border-b-2 border-red-600 pb-0.5 font-sans text-xs font-bold uppercase tracking-[0.2em] text-red-600">
+          <div className="inline-block border-b-2 border-sky-500 pb-0.5 font-sans text-xs font-bold uppercase tracking-[0.2em] text-sky-400">
             {article.category || 'Análisis'}
           </div>
 
