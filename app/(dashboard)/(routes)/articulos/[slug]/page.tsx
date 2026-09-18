@@ -21,6 +21,28 @@ function ArticleBody({ content }: { content: string }) {
 
   const blocks = preprocessed.split(/\n\s*\n/);
 
+  const explicitHeadings = [
+    "El Origen Fiscal de los Problemas Monetarios",
+    "El Mecanismo de Transmisión",
+    "Impacto en el Sector Productivo",
+    "Lecciones No Aprendidas",
+    "La Caja de Conversión de 1890",
+    "La Crisis del '30 y el Cambio de Paradigma",
+    "La Creación del Banco Central en 1935",
+    "El Principio de la Inflación Estructural",
+    "Introducción",
+    "Conclusión",
+    "El Contexto de la Creación",
+    "Funcionamiento del Sistema",
+    "La Edad de Oro de Argentina",
+    "El Fin de una Era",
+    "1. Descalce de monedas",
+    "2. Inexistencia de crédito hipotecario",
+    "3. Fragmentación de los hogares",
+    "4. Desplome demográfico",
+    "5. Agotamiento previsional"
+  ];
+
   return (
     <div className="space-y-7 font-serif text-neutral-300">
       {blocks.map((block, idx) => {
@@ -35,13 +57,14 @@ function ArticleBody({ content }: { content: string }) {
 
         if (!innerHTML) return null;
 
-        // Subtítulo H2
-        if (innerHTML.startsWith('## ') || block.toLowerCase().includes('<h2')) {
+        // Subtítulo H2 (explicit check or markdown/HTML tag)
+        const isExplicitHeading = explicitHeadings.includes(innerHTML.trim());
+        if (innerHTML.startsWith('## ') || block.toLowerCase().includes('<h2') || isExplicitHeading) {
           const heading = innerHTML.replace(/^##\s+/, '');
           return (
             <h2
               key={idx}
-              className="text-2xl sm:text-3xl font-serif font-bold tracking-tight text-neutral-100 pt-6 pb-2 border-b border-neutral-800"
+              className="text-xl sm:text-2xl font-bold text-neutral-100 mt-10 mb-4 pt-2 tracking-tight block"
               dangerouslySetInnerHTML={{ __html: heading }}
             />
           );
@@ -53,40 +76,29 @@ function ArticleBody({ content }: { content: string }) {
           return (
             <h3
               key={idx}
-              className="text-xl sm:text-2xl font-serif font-semibold text-neutral-200 pt-4"
+              className="text-xl sm:text-2xl font-bold text-neutral-100 mt-10 mb-4 pt-2 tracking-tight block"
               dangerouslySetInnerHTML={{ __html: heading }}
             />
           );
         }
 
-        // Cita editorial (Pull quote) con acento celeste
+        // Cita editorial (Pull quote)
         if (innerHTML.startsWith('> ')) {
           return (
             <blockquote
               key={idx}
-              className="my-8 border-l-2 border-sky-500 bg-neutral-900/40 py-3 pl-6 pr-4 italic text-neutral-200 text-xl leading-relaxed"
+              className="my-8 border-l-2 border-red-600 bg-neutral-900/40 py-3 pl-6 pr-4 italic text-neutral-200 text-xl leading-relaxed"
             >
               {innerHTML.replace(/^>\s+/, '')}
             </blockquote>
           );
         }
 
-        // Párrafo de apertura (Lead)
-        if (idx === 0) {
-          return (
-            <p
-              key={idx}
-              className="text-xl sm:text-[22px] leading-relaxed text-neutral-200 font-normal tracking-normal"
-              dangerouslySetInnerHTML={{ __html: innerHTML }}
-            />
-          );
-        }
-
-        // Párrafos regulares
+        // Párrafos regulares (y de apertura)
         return (
           <p
             key={idx}
-            className="text-lg sm:text-[19px] leading-[1.8] text-neutral-300 font-light"
+            className="text-base sm:text-lg text-neutral-300 leading-relaxed sm:leading-8 mb-6 font-normal"
             dangerouslySetInnerHTML={{ __html: innerHTML }}
           />
         );
@@ -107,15 +119,13 @@ export default async function ArticlePage({
     notFound();
   }
 
-  const editorialImage = article.imageUrl || '/images/article-bcra-1935.png';
-
   return (
     <article className="min-h-screen bg-neutral-950 text-neutral-100 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-2xl mx-auto">
         <nav className="mb-8">
           <Link
             href="/articulos"
-            className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-neutral-400 hover:text-sky-400 transition-colors font-sans"
+            className="inline-flex items-center gap-2 text-xs uppercase tracking-widest text-neutral-400 hover:text-red-500 transition-colors font-sans"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
             Volver al índice
@@ -123,7 +133,7 @@ export default async function ArticlePage({
         </nav>
 
         <header className="space-y-4 mb-8">
-          <div className="inline-block border-b-2 border-sky-500 pb-0.5 font-sans text-xs font-bold uppercase tracking-[0.2em] text-sky-400">
+          <div className="inline-block border-b-2 border-red-600 pb-0.5 font-sans text-xs font-bold uppercase tracking-[0.2em] text-red-600">
             {article.category || 'Análisis'}
           </div>
 
@@ -159,22 +169,19 @@ export default async function ArticlePage({
           </div>
         </header>
 
-        <figure className="my-10 overflow-hidden rounded-sm border border-neutral-800 bg-neutral-900">
-          <div className="relative aspect-[16/10] w-full bg-neutral-900">
+        <figure className="my-8 overflow-hidden rounded-lg border border-neutral-800 bg-neutral-900/50">
+          <div className="aspect-[16/9] relative w-full">
             <Image
-              src={editorialImage}
+              src={article.imageUrl || "/images/article-bcra-1935.png"}
               alt={article.title}
+              className="object-cover"
               fill
               priority
-              sizes="(max-width: 768px) 100vw, 680px"
-              className="object-cover"
             />
           </div>
-          {article.imageCaption && (
-            <figcaption className="p-3 text-left font-sans text-xs text-neutral-400 border-t border-neutral-800 bg-neutral-900/50">
-              {article.imageCaption}
-            </figcaption>
-          )}
+          <figcaption className="p-3 text-xs text-neutral-400 italic border-t border-neutral-800/60 bg-neutral-950/60">
+            {article.imageCaption || "Documento y contexto histórico de la política monetaria argentina."}
+          </figcaption>
         </figure>
 
         <main className="mt-8">

@@ -56,16 +56,16 @@ const CoursesPage = async () => {
 
   return (
     <div className='p-6 max-w-4xl mx-auto'>
-      <PageHeader
-        label="Instructor"
-        title="Mis Cursos"
-        className="mb-8"
-        action={
-          <Link href='/teacher/create'>
-            <Button>Nuevo Curso</Button>
-          </Link>
-        }
-      />
+        <PageHeader
+          label="Instructor"
+          title="Mis Cursos"
+          className="mb-8"
+          action={
+            <Link href='/teacher/create'>
+              <Button>Nuevo Curso</Button>
+            </Link>
+          }
+        />
 
       <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {courses.map((course, i) => (
@@ -78,9 +78,9 @@ const CoursesPage = async () => {
             <div className="flex flex-col gap-1">
               <h3 className="font-serif text-lg text-slate-900 dark:text-slate-100 line-clamp-2">{course.title}</h3>
               {course.isPublished ? (
-                <span className="text-xs font-mono tabular-nums text-sky-500">Publicado</span>
+                <span className="text-xs font-mono tabular-nums text-emerald-600">Publicado</span>
               ) : (
-                <span className="text-xs font-mono tabular-nums text-neutral-500">Borrador</span>
+                <span className="text-xs font-mono tabular-nums text-slate-500">Borrador</span>
               )}
             </div>
 

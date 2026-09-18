@@ -6,7 +6,7 @@ module.exports = {
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
-  ],
+	],
   theme: {
     container: {
       center: true,
@@ -71,18 +71,14 @@ module.exports = {
           to: { height: 0 },
         },
         fill: {
-          from: { transform: "scaleX(0)" },
+          from: { transform: "scaleX(0)" }
         },
         enter: {
-          from: { opacity: 0, transform: "translateY(4px)" },
+          from: { opacity: 0, transform: "translateY(4px)" }
         },
         "marquee": {
           "0%": { transform: "translateX(0%)" },
           "100%": { transform: "translateX(-100%)" },
-        },
-        "marquee-text": {
-          "0%": { transform: "translateX(0%)" },
-          "100%": { transform: "translateX(-50%)" },
         },
       },
       animation: {
@@ -91,7 +87,6 @@ module.exports = {
         fill: "fill 700ms cubic-bezier(0.16, 1, 0.3, 1) both",
         enter: "enter 400ms ease-out both",
         "marquee": "marquee 45s linear infinite",
-        "marquee-text": "marquee-text 40s linear infinite",
       },
     },
   },
