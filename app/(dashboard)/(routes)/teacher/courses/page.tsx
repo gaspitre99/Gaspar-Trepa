@@ -78,9 +78,9 @@ const CoursesPage = async () => {
             <div className="flex flex-col gap-1">
               <h3 className="font-serif text-lg text-zinc-900 dark:text-zinc-100 line-clamp-2">{course.title}</h3>
               {course.isPublished ? (
-                <span className="text-xs font-mono tabular-nums text-emerald-600">Publicado</span>
+                <span className="text-xs font-mono tabular-nums text-sky-500">Publicado</span>
               ) : (
-                <span className="text-xs font-mono tabular-nums text-zinc-500">Borrador</span>
+                <span className="text-xs font-mono tabular-nums text-neutral-500">Borrador</span>
               )}
             </div>
 

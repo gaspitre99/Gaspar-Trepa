@@ -114,7 +114,7 @@ export default function InflationCalculator() {
                 </div>
                 <div>
                   <p className="text-[11px] font-bold uppercase tracking-widest text-zinc-500">La inflación acumulada fue de</p>
-                  <p className="text-xl font-mono tabular-nums font-bold text-emerald-600 dark:text-emerald-400 mt-1">
+                  <p className="text-xl font-mono tabular-nums font-bold text-rose-500 mt-1">
                     {result.accumulatedPercentage.toLocaleString('es-AR', { maximumFractionDigits: 2 })}%
                   </p>
                 </div>
@@ -125,13 +125,13 @@ export default function InflationCalculator() {
                 <div className="pt-4 flex flex-col sm:flex-row gap-3">
                   <button
                     onClick={handleCopy}
-                    className="flex-1 bg-slate-900 text-white dark:bg-white dark:text-slate-900 px-4 py-2 rounded-md text-sm font-semibold hover:opacity-90 transition"
+                    className="flex-1 bg-sky-600 text-white px-4 py-2 rounded-md text-sm font-semibold hover:bg-sky-500 transition"
                   >
                     Copiar cálculo
                   </button>
                   <button
                     onClick={() => setShowDetails(!showDetails)}
-                    className="flex-1 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-slate-700 dark:text-zinc-300 px-4 py-2 rounded-md text-sm font-semibold hover:bg-zinc-50 dark:hover:bg-zinc-800 transition"
+                    className="flex-1 bg-transparent border border-neutral-700 text-neutral-300 px-4 py-2 rounded-md text-sm font-semibold hover:bg-neutral-800 transition"
                   >
                     {showDetails ? 'Ocultar detalle' : 'Ver detalle'}
                   </button>
@@ -183,9 +183,9 @@ export default function InflationCalculator() {
               <Line
                 type="monotone"
                 dataKey="rate"
-                stroke="#2563eb"
+                stroke="#0284c7"
                 strokeWidth={3}
-                dot={{ r: 4, fill: '#2563eb', strokeWidth: 0 }}
+                dot={{ r: 4, fill: '#0ea5e9', strokeWidth: 0 }}
                 activeDot={{ r: 6, strokeWidth: 0 }}
               />
             </LineChart>

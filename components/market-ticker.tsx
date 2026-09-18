@@ -32,10 +32,10 @@ const FALLBACK_DATA: TickerItem[] = [
 
 const renderIcon = (type: string) => {
   switch (type) {
-    case 'crypto': return <Bitcoin className="h-4 w-4 text-amber-500" />;
-    case 'index': return <BarChart3 className="h-4 w-4 text-blue-400" />;
+    case 'crypto': return <Bitcoin className="h-4 w-4 text-sky-500" />;
+    case 'index': return <BarChart3 className="h-4 w-4 text-sky-400" />;
     case 'risk': return <TrendingUp className="h-4 w-4 text-rose-500" />;
-    case 'currency': default: return <Landmark className="h-4 w-4 text-emerald-500" />;
+    case 'currency': default: return <Landmark className="h-4 w-4 text-sky-500" />;
   }
 };
 
@@ -132,10 +132,10 @@ export default function MarketTicker() {
       {/* Live Badge Fixed on Left */}
       <div className="absolute left-0 top-0 bottom-0 z-10 flex items-center pl-4 pr-6 bg-gradient-to-r from-[#09090b] via-[#09090b] to-transparent shrink-0">
         <div className="relative flex h-2 w-2 mr-2">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-sky-500"></span>
         </div>
-        <span className="font-semibold text-emerald-400 text-[10px] tracking-wider uppercase">En Vivo</span>
+        <span className="font-semibold text-sky-400 text-[10px] tracking-wider uppercase">En Vivo</span>
       </div>
 
       <div className="flex flex-nowrap overflow-hidden w-full ml-24">

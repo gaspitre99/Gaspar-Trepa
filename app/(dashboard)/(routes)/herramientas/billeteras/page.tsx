@@ -44,7 +44,7 @@ export default function BilleterasPage() {
                       <th className="px-6 py-4 font-bold uppercase tracking-widest text-[11px] text-zinc-500">Billetera</th>
                       <th className="px-6 py-4 font-bold uppercase tracking-widest text-[11px] text-zinc-500 text-right">TNA Base</th>
                       <th className="px-6 py-4 font-bold uppercase tracking-widest text-[11px] text-zinc-500 text-right">Tope Máximo</th>
-                      <th className="px-6 py-4 font-bold uppercase tracking-widest text-[11px] text-emerald-600 dark:text-emerald-400 text-right">Ganancia 30 días</th>
+                      <th className="px-6 py-4 font-bold uppercase tracking-widest text-[11px] text-sky-600 dark:text-sky-400 text-right">Ganancia 30 días</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800/50">
@@ -60,7 +60,7 @@ export default function BilleterasPage() {
                         <td className="px-6 py-4 text-right font-mono tabular-nums text-zinc-500 dark:text-zinc-400">
                           {wallet.maxCapARS ? formatArs(wallet.maxCapARS) : 'Sin límite'}
                         </td>
-                        <td className="px-6 py-4 text-right font-mono tabular-nums font-bold text-emerald-600 dark:text-emerald-400">
+                        <td className="px-6 py-4 text-right font-mono tabular-nums font-bold text-sky-600 dark:text-sky-400">
                           {formatArs(calc.monthlyEarnings)}
                         </td>
                       </tr>
@@ -98,20 +98,20 @@ export default function BilleterasPage() {
                   <div className="space-y-4">
                     <div className="flex justify-between items-center bg-zinc-50 dark:bg-zinc-800/40 p-3 rounded-md border border-zinc-200 dark:border-zinc-800/60">
                       <span className="font-bold uppercase tracking-widest text-[11px] text-zinc-500">Por Día</span>
-                      <span className="font-mono tabular-nums font-medium text-emerald-600 dark:text-emerald-400">{formatArs(topWallet.calc.dailyEarnings)}</span>
+                      <span className="font-mono tabular-nums font-medium text-sky-600 dark:text-sky-400">{formatArs(topWallet.calc.dailyEarnings)}</span>
                     </div>
                     <div className="flex justify-between items-center bg-zinc-50 dark:bg-zinc-800/40 p-3 rounded-md border border-zinc-200 dark:border-zinc-800/60">
                       <span className="font-bold uppercase tracking-widest text-[11px] text-zinc-500">Por Mes (30d)</span>
-                      <span className="font-mono tabular-nums font-bold text-emerald-600 dark:text-emerald-400 text-lg">{formatArs(topWallet.calc.monthlyEarnings)}</span>
+                      <span className="font-mono tabular-nums font-bold text-sky-600 dark:text-sky-400 text-lg">{formatArs(topWallet.calc.monthlyEarnings)}</span>
                     </div>
                     <div className="flex justify-between items-center bg-zinc-50 dark:bg-zinc-800/40 p-3 rounded-md border border-zinc-200 dark:border-zinc-800/60">
                       <span className="font-bold uppercase tracking-widest text-[11px] text-zinc-500">TNA Real Efectiva</span>
-                      <span className="font-mono tabular-nums font-medium text-blue-600 dark:text-blue-400">{formatPct(topWallet.calc.effectiveYieldPct)}</span>
+                      <span className="font-mono tabular-nums font-medium text-sky-600 dark:text-sky-400">{formatPct(topWallet.calc.effectiveYieldPct)}</span>
                     </div>
                   </div>
 
                   {topWallet.wallet.maxCapARS && capital > topWallet.wallet.maxCapARS && (
-                    <p className="mt-4 font-mono tabular-nums text-[11px] text-amber-600 dark:text-amber-500/90 leading-relaxed">
+                    <p className="mt-4 font-mono tabular-nums text-[11px] text-sky-600 dark:text-sky-500/90 leading-relaxed">
                       ⚠️ Tu capital supera el tope remunerado de {formatArs(topWallet.wallet.maxCapARS)}. El excedente no genera intereses en esta billetera.
                     </p>
                   )}

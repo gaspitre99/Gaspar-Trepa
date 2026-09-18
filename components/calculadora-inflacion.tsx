@@ -52,7 +52,7 @@ export default function CalculadoraInflacion() {
             step="10000"
             value={capital}
             onChange={(e) => setCapital(Number(e.target.value))}
-            className="w-full accent-emerald-500"
+            className="w-full accent-sky-500"
           />
         </div>
 
@@ -117,8 +117,8 @@ export default function CalculadoraInflacion() {
       </div>
 
       <div className="mt-6 pt-4 text-center relative z-10">
-         <p className="text-xs text-slate-400 mb-2">Nivel Desbloqueado: Estratega de Renta Fija</p>
-         <Link href="/teacher/courses" className="text-sm font-semibold text-emerald-400 hover:text-emerald-300 hover:underline">
+         <p className="text-xs text-neutral-400 mb-2">Nivel Desbloqueado: Estratega de Renta Fija</p>
+         <Link href="/teacher/courses" className="text-sm font-semibold text-sky-400 hover:text-sky-300 hover:underline">
            ¿Querés armar esta cartera en tu ALyC real paso a paso? Mirá la clase práctica. &rarr;
          </Link>
       </div>

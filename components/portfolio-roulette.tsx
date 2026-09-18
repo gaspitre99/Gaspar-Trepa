@@ -62,10 +62,10 @@ export default function PortfolioRoulette() {
   };
 
   return (
-    <div className="bg-white dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-800 rounded-sm shadow-sm p-6 max-w-md mx-auto w-full relative overflow-hidden">
-      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-blue-500"></div>
-      <h2 className="font-serif text-2xl font-medium text-slate-900 dark:text-zinc-100 mb-2">Ruleta de Estrategia</h2>
-      <p className="text-slate-400 text-sm mb-6">Encontrá tu asignación ideal de activos argentinos en 1 clic.</p>
+    <div className="bg-neutral-900 border border-neutral-800 rounded-sm shadow-sm p-6 max-w-md mx-auto w-full relative overflow-hidden">
+      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-sky-400 to-sky-600"></div>
+      <h2 className="font-serif text-2xl font-medium text-neutral-50 mb-2">Ruleta de Estrategia</h2>
+      <p className="text-neutral-400 text-sm mb-6">Encontrá tu asignación ideal de activos argentinos en 1 clic.</p>
 
       <div className="flex gap-2 mb-6">
         {PROFILES.map((p) => (
@@ -74,8 +74,8 @@ export default function PortfolioRoulette() {
             onClick={() => setProfile(p)}
             className={`flex-1 py-1 px-2 text-xs font-semibold rounded-md border transition-colors ${
               profile === p
-                ? 'bg-emerald-500 border-emerald-500 text-slate-900'
-                : 'border-slate-600 text-slate-400 hover:border-slate-400 hover:text-white'
+                ? 'bg-sky-500 border-sky-500 text-white'
+                : 'border-neutral-600 text-neutral-400 hover:border-sky-500 hover:text-white'
             }`}
           >
             {p}
@@ -83,15 +83,15 @@ export default function PortfolioRoulette() {
         ))}
       </div>
 
-      <div className="bg-slate-800 rounded-lg p-6 mb-6 h-40 flex flex-col items-center justify-center border border-slate-700 relative overflow-hidden">
+      <div className="bg-neutral-950 rounded-lg p-6 mb-6 h-40 flex flex-col items-center justify-center border border-neutral-800 relative overflow-hidden">
         {spinning ? (
           <div className="flex flex-col items-center animate-pulse">
-            <RefreshCw className="h-8 w-8 text-emerald-400 animate-spin mb-2" />
-            <p className="font-mono text-emerald-400 tracking-widest text-lg">CALCULANDO...</p>
+            <RefreshCw className="h-8 w-8 text-sky-400 animate-spin mb-2" />
+            <p className="font-mono text-sky-400 tracking-widest text-lg">CALCULANDO...</p>
           </div>
         ) : result ? (
           <div className="text-center animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <div className="text-xs font-bold text-emerald-400 tracking-wider uppercase mb-1">
+            <div className="text-xs font-bold text-sky-400 tracking-wider uppercase mb-1">
               {result.title}
             </div>
             <div className="text-lg font-medium text-white mb-2 leading-tight">
@@ -111,7 +111,7 @@ export default function PortfolioRoulette() {
             </div>
           </div>
         ) : (
-          <p className="text-slate-500 text-sm">Seleccioná tu perfil y girá la ruleta.</p>
+          <p className="text-neutral-500 text-sm">Seleccioná tu perfil y girá la ruleta.</p>
         )}
       </div>
 
@@ -119,23 +119,23 @@ export default function PortfolioRoulette() {
         <Button
           onClick={spin}
           disabled={spinning}
-          className="flex-1 bg-slate-900 text-white dark:bg-white dark:text-slate-900 rounded-sm"
+          className="flex-1 bg-sky-600 hover:bg-sky-500 text-white rounded-sm"
         >
           {spinning ? 'Girando...' : 'Ver Cartera Teórica'}
         </Button>
 
-      <p className="text-[10px] text-zinc-500 mt-2 text-center w-full block">*Asignación teórica de activos según perfil modelo. No constituye recomendación directa.</p>
+      <p className="text-[10px] text-neutral-500 mt-2 text-center w-full block">*Asignación teórica de activos según perfil modelo. No constituye recomendación directa.</p>
         {result && (
-          <Button onClick={share} variant="outline" className="border-slate-600 text-slate-900 bg-emerald-100 hover:bg-emerald-200">
+          <Button onClick={share} variant="outline" className="border-sky-500 text-sky-400 bg-transparent hover:bg-sky-950/30">
             <Share2 className="h-4 w-4" />
           </Button>
         )}
       </div>
 
       {result && (
-        <div className="mt-4 pt-4 border-t border-slate-700 text-center animate-in fade-in duration-700">
-           <p className="text-xs text-slate-400 mb-2">¿Querés aprender a armar esta cartera paso a paso?</p>
-           <Link href="/teacher/courses" className="text-sm font-semibold text-blue-400 hover:text-blue-300 hover:underline">
+        <div className="mt-4 pt-4 border-t border-neutral-700 text-center animate-in fade-in duration-700">
+           <p className="text-xs text-neutral-400 mb-2">¿Querés aprender a armar esta cartera paso a paso?</p>
+           <Link href="/teacher/courses" className="text-sm font-semibold text-sky-400 hover:text-sky-300 hover:underline">
              Mirá el curso de Inversiones &rarr;
            </Link>
         </div>
