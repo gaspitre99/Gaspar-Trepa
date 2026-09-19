@@ -3,7 +3,6 @@ import Sidebar from './_components/sidebar';
 import Navbar from './_components/navbar';
 import MarketTicker from '@/components/market-ticker';
 import LegalDisclaimer from '@/components/legal-disclaimer';
-import DisclaimerMarquee from '@/components/disclaimer-marquee';
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -20,7 +19,6 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
         <main className='md:pl-56 pt-[120px] h-full flex flex-col justify-between min-h-screen'>
           <div className="flex-1">{children}</div>
           <div className="mt-auto">
-            <DisclaimerMarquee />
             <LegalDisclaimer />
           </div>
         </main>
