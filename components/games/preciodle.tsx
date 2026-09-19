@@ -163,7 +163,7 @@ export default function Preciodle() {
     for (let i = 0; i < MAX_GUESSES; i++) {
       const g = state.guesses[i];
       if (g) {
-        let bgColor = 'bg-slate-800 border-slate-700';
+        let bgColor = 'bg-neutral-800 border-neutral-700';
         if (g.proximity === 'EXACT') bgColor = 'bg-emerald-600 border-emerald-500';
         else if (g.proximity === 'CLOSE') bgColor = 'bg-amber-500 border-amber-400';
         else bgColor = 'bg-rose-600 border-rose-500';
@@ -180,8 +180,8 @@ export default function Preciodle() {
         );
       } else {
         rows.push(
-          <div key={i} className="flex items-center justify-center p-3 rounded-md border border-slate-700 bg-slate-800/50 mb-2 h-12">
-            <span className="text-slate-600 font-mono text-sm">{i + 1}</span>
+          <div key={i} className="flex items-center justify-center p-3 rounded-md border border-neutral-800 bg-neutral-900/80 mb-2 h-12 text-neutral-200">
+            <span className="text-neutral-600 font-mono text-sm">{i + 1}</span>
           </div>
         );
       }
@@ -190,20 +190,20 @@ export default function Preciodle() {
   };
 
   return (
-    <div className="max-w-md mx-auto w-full bg-slate-900 border border-slate-700 rounded-xl overflow-hidden shadow-xl text-white">
-      <div className="bg-slate-800 p-4 border-b border-slate-700 flex justify-between items-center">
+    <div className="max-w-md mx-auto w-full bg-neutral-900/50 border border-neutral-800 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-sm text-white">
+      <div className="bg-neutral-800/50 p-4 border-b border-neutral-800 flex justify-between items-center">
         <h2 className="text-xl font-bold tracking-tight text-white flex items-center gap-2">
           <ShoppingCart className="h-5 w-5 text-emerald-400" />
           PRECIODLE
         </h2>
-        <div className="text-xs text-slate-400 font-semibold bg-slate-900 px-2 py-1 rounded">
+        <div className="text-xs text-neutral-400 font-semibold bg-neutral-900 px-2 py-1 rounded">
           Racha: {state.streak} 🔥
         </div>
       </div>
 
       <div className="p-6">
         <div className="text-center mb-6">
-          <span className="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1">{product.category}</span>
+          <span className="text-xs font-bold uppercase tracking-wider text-neutral-400 block mb-1">{product.category}</span>
           <h3 className="text-2xl font-bold text-emerald-400">{product.name}</h3>
         </div>
 
@@ -214,7 +214,7 @@ export default function Preciodle() {
         {state.gameStatus === 'IN_PROGRESS' ? (
           <form onSubmit={handleGuess} className="flex gap-2">
             <div className="relative flex-1">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 font-bold">$</span>
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400 font-bold">$</span>
               <Input
                 type="text"
                 inputMode="numeric"
@@ -222,41 +222,41 @@ export default function Preciodle() {
                 placeholder="Ingresar precio en ARS"
                 value={currentGuess}
                 onChange={(e) => setCurrentGuess(e.target.value)}
-                className="pl-8 bg-slate-800 border-slate-700 text-white font-bold"
+                className="pl-8 bg-neutral-950 border border-neutral-800 text-neutral-100 placeholder:text-neutral-600 focus:border-neutral-600 focus:ring-0 font-bold"
                 required
               />
             </div>
-            <Button type="submit" className="bg-emerald-600 hover:bg-emerald-500 font-bold text-white">
+            <Button type="submit" className="bg-emerald-600 hover:bg-emerald-500 font-bold text-white transition-colors">
               Adivinar
             </Button>
           </form>
         ) : (
-          <div className="text-center animate-in fade-in zoom-in duration-500 bg-slate-800 border border-slate-700 rounded-lg p-6">
+          <div className="text-center animate-in fade-in zoom-in duration-500 bg-neutral-800/50 border border-neutral-700 rounded-lg p-6">
             <h4 className="text-2xl font-black mb-2">
               {state.gameStatus === 'WON' ? '¡GANASTE!' : 'JUEGO TERMINADO'}
             </h4>
-            <p className="text-slate-300 mb-4">El precio de hoy era <strong className="text-white text-lg">{formatPrice(product.targetPrice)}</strong></p>
+            <p className="text-neutral-300 mb-4">El precio de hoy era <strong className="text-white text-lg">{formatPrice(product.targetPrice)}</strong></p>
 
-            <div className="grid grid-cols-2 gap-4 mb-6 border-t border-slate-700 pt-4">
+            <div className="grid grid-cols-2 gap-4 mb-6 border-t border-neutral-700 pt-4">
                <div>
                   <div className="text-3xl font-black text-emerald-400">{state.gamesWon}/{state.gamesPlayed}</div>
-                  <div className="text-xs text-slate-400 uppercase font-bold">Victorias</div>
+                  <div className="text-xs text-neutral-400 uppercase font-bold">Victorias</div>
                </div>
                <div>
                   <div className="text-3xl font-black text-amber-400">{state.maxStreak}</div>
-                  <div className="text-xs text-slate-400 uppercase font-bold">Racha Máx</div>
+                  <div className="text-xs text-neutral-400 uppercase font-bold">Racha Máx</div>
                </div>
             </div>
 
             <div className="flex gap-4 items-center justify-center">
                <div className="text-left">
-                  <div className="text-xs text-slate-400 uppercase font-bold mb-1">Próximo en</div>
+                  <div className="text-xs text-neutral-400 uppercase font-bold mb-1">Próximo en</div>
                   <div className="font-mono text-xl font-bold flex items-center gap-2">
                     <RefreshCcw className="h-4 w-4" /> {nextDayTime}
                   </div>
                </div>
-               <div className="w-px h-12 bg-slate-700 mx-2"></div>
-               <Button onClick={shareResult} className="bg-emerald-600 hover:bg-emerald-500 font-bold text-white flex gap-2">
+               <div className="w-px h-12 bg-neutral-700 mx-2"></div>
+               <Button onClick={shareResult} className="bg-emerald-600 hover:bg-emerald-500 font-bold text-white transition-colors flex gap-2">
                  <Share2 className="h-4 w-4" /> Compartir
                </Button>
             </div>
