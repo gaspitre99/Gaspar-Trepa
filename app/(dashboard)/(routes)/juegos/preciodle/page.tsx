@@ -6,7 +6,7 @@ const Preciodle = dynamic(() => import('@/components/games/preciodle'), { ssr: f
 
 export default function PreciodlePage() {
   return (
-    <div className="bg-slate-950 text-slate-100 min-h-screen p-6">
+    <div className="bg-neutral-950 text-neutral-100 min-h-screen p-6">
       <Preciodle />
     </div>
   );
