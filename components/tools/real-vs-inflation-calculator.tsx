@@ -5,7 +5,7 @@ import { formatPrice } from '@/lib/format';
 import confetti from 'canvas-confetti';
 import Link from 'next/link';
 
-export default function CalculadoraInflacion() {
+export default function RealVsInflationCalculator() {
   const [capital, setCapital] = useState<number>(100000);
   const [tna, setTna] = useState<number>(60);
   const [inflacion, setInflacion] = useState<number>(4);
